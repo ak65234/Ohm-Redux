@@ -15,6 +15,7 @@ public class Robot extends TimedRobot {
 	private Controls ctrls;
 	private Drive drive;
 	private Hand hand;
+	private Fingers fingers;
 
 	@Override
 	public void robotInit() {
@@ -27,6 +28,7 @@ public class Robot extends TimedRobot {
 
 		drive = new Drive(hw);
 		hand = new Hand(hw);
+		fingers = new Fingers(hw);
 	}
 
 	@Override
@@ -53,30 +55,36 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		drive.enable();
+		fingers.enable();
 	}
 
 	@Override
 	public void teleopPeriodic() {
-		double LY = -ctrls.driver.getY(GenericHID.Hand.kLeft);
+		double LY = ctrls.driver.getY(GenericHID.Hand.kLeft);
 		double RX = ctrls.driver.getX(GenericHID.Hand.kRight);
+		double LT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kLeft);
+		double RT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kRight);
 		boolean A = ctrls.driver.getAButton();
 		boolean X = ctrls.driver.getXButton();
 		boolean Y = ctrls.driver.getYButton();
 
-		drive.arcade(LY, RX);
+		drive.arcade(-LY, RX);
 
-		if(A){
+		if (A) {
 			hand.extend();
-		} else if(X){
+		} else if (X) {
 			hand.score();
-		} else if (Y){
+		} else if (Y) {
 			hand.stow();
 		}
+
+		fingers.setSpeed(LT - RT);
 	}
 
 	@Override
 	public void disabledInit() {
 		drive.disable();
 		hand.disable();
+		fingers.disable();
 	}
 }
