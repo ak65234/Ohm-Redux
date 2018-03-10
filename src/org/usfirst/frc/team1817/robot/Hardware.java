@@ -19,7 +19,7 @@ public class Hardware {
     public final SpeedControllerGroup intake;
     public final VictorSP wrist;
 
-    public Hardware(){
+    public Hardware() {
         VictorSP left = new VictorSP(1);
         VictorSP right = new VictorSP(0);
         chassis = new DifferentialDrive(left, right);
