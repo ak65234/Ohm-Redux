@@ -52,4 +52,10 @@ public class Hardware {
             gyro.calibrate();
         }
     }
+
+    public void resetSensors(){
+        leftEncoder.reset();
+        rightEncoder.reset();
+        gyro.reset();
+    }
 }
