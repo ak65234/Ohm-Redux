@@ -10,7 +10,8 @@ public class Robot extends TimedRobot {
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 
-	Hardware hw;
+	private Hardware hw;
+	private Controls ctrls;
 
 	@Override
 	public void robotInit() {
@@ -19,6 +20,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Auto choices", m_chooser);
 
 		hw = new Hardware();
+		ctrls = new Controls();
 	}
 
 	@Override
