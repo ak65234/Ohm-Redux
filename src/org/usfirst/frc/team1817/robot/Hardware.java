@@ -20,8 +20,10 @@ public class Hardware {
     public final VictorSP wrist;
 
     public Hardware() {
-        VictorSP left = new VictorSP(1);
-        VictorSP right = new VictorSP(0);
+        VictorSP left = new VictorSP(0);
+        left.setInverted(true);
+        VictorSP right = new VictorSP(1);
+        right.setInverted(true);
         chassis = new DifferentialDrive(left, right);
 
         VictorSP intake1 = new VictorSP(2);
