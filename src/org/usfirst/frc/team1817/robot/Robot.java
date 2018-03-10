@@ -71,12 +71,15 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		double LY = ctrls.driver.getY(GenericHID.Hand.kLeft);
 		double RX = ctrls.driver.getX(GenericHID.Hand.kRight);
-		double LT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kLeft);
-		double RT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kRight);
+		double dLT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kLeft);
+		double dRT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kRight);
 		boolean RB = ctrls.driver.getBumper(GenericHID.Hand.kRight);
 		boolean A = ctrls.driver.getAButton();
 		boolean X = ctrls.driver.getXButton();
 		boolean Y = ctrls.driver.getYButton();
+
+		double mLT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kLeft);
+		double mRT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kRight);
 
 		drive.arcade(-LY, RX);
 
@@ -89,9 +92,11 @@ public class Robot extends TimedRobot {
 			hand.score();
 		} else if (Y) {
 			hand.stow();
+		} else {
+			hand.manualMove(mLT - mRT);
 		}
 
-		fingers.setSpeed(LT - RT);
+		fingers.setSpeed(dLT - dRT);
 	}
 
 	@Override

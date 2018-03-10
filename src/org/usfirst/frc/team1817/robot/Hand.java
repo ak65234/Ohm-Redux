@@ -93,4 +93,15 @@ public class Hand implements Runnable {
 	private double deadBand(double value) {
 		return Math.abs(value) > DEADBAND ? value : 0;
 	}
+
+    private boolean validRange(double value){
+        return Math.abs(value) > DEADBAND;
+    }
+
+    public void manualMove(double value){
+        if(validRange(value)){
+			disable();
+			wrist.set(value);
+        }
+    }
 }
