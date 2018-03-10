@@ -14,8 +14,11 @@ public class Robot extends TimedRobot {
 	private Hardware hw;
 	private Controls ctrls;
 	private Drive drive;
+	private Shift shift;
 	private Hand hand;
 	private Fingers fingers;
+
+	private Toggle shiftToggle;
 
 	@Override
 	public void robotInit() {
@@ -27,8 +30,11 @@ public class Robot extends TimedRobot {
 		ctrls = new Controls();
 
 		drive = new Drive(hw);
+		shift = new Shift(hw);
 		hand = new Hand(hw);
 		fingers = new Fingers(hw);
+
+		shiftToggle = new Toggle();
 	}
 
 	@Override
@@ -55,7 +61,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		drive.enable();
+		shift.enable();
 		fingers.enable();
+
+		shiftToggle.set(false);
 	}
 
 	@Override
@@ -64,11 +73,15 @@ public class Robot extends TimedRobot {
 		double RX = ctrls.driver.getX(GenericHID.Hand.kRight);
 		double LT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kLeft);
 		double RT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kRight);
+		boolean RB = ctrls.driver.getBumper(GenericHID.Hand.kRight);
 		boolean A = ctrls.driver.getAButton();
 		boolean X = ctrls.driver.getXButton();
 		boolean Y = ctrls.driver.getYButton();
 
 		drive.arcade(-LY, RX);
+
+		shiftToggle.update(RB);
+		shift.setInHighGear(shiftToggle.get());
 
 		if (A) {
 			hand.extend();
