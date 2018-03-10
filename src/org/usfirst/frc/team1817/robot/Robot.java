@@ -57,9 +57,7 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		double LY = -ctrls.driver.getY(Hand.kLeft);
 		double RX = ctrls.driver.getX(Hand.kRight);
-
-		SmartDashboard.putNumber("Left Y", LY);
-		SmartDashboard.putNumber("Right X", RX);
+		
 		drive.arcade(LY, RX);
 	}
 
