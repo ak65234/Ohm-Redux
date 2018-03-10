@@ -31,6 +31,7 @@ public class Fingers implements Runnable {
             switch (state) {
             case DISABLED:
                 intake.stopMotor();
+                speed = 0.0;
                 break;
             case ENABLED:
                 move();
