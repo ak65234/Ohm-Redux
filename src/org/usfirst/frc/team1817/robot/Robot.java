@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1817.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,6 +20,7 @@ public class Robot extends TimedRobot {
 	private Fingers fingers;
 
 	private Toggle shiftToggle;
+	private Timer timer;
 
 	@Override
 	public void robotInit() {
@@ -35,26 +37,42 @@ public class Robot extends TimedRobot {
 		fingers = new Fingers(hw);
 
 		shiftToggle = new Toggle();
+		
+		timer = new Timer();
 	}
 
 	@Override
 	public void autonomousInit() {
-		m_autoSelected = m_chooser.getSelected();
-		// m_autoSelected = SmartDashboard.getString("Auto Selector",
-		// 		kDefaultAuto);
-		System.out.println("Auto selected: " + m_autoSelected);
+		// m_autoSelected = m_chooser.getSelected();
+		// // m_autoSelected = SmartDashboard.getString("Auto Selector",
+		// // 		kDefaultAuto);
+		// System.out.println("Auto selected: " + m_autoSelected);
+		shift.enable();
+		shift.setInHighGear(false);
+
+		timer.reset();
+		timer.start();
 	}
 
 	@Override
 	public void autonomousPeriodic() {
-		switch (m_autoSelected) {
-		case kCustomAuto:
-			// Put custom auto code here
-			break;
-		case kDefaultAuto:
-		default:
-			// Put default auto code here
-			break;
+	// 	switch (m_autoSelected) {
+	// 	case kCustomAuto:
+	// 		// Put custom auto code here
+	// 		break;
+	// 	case kDefaultAuto:
+	// 	default:
+	// 		// Put default auto code here
+	// 		break;
+	// 	}
+		double time = timer.get();
+
+		if(time < 7.5){
+			drive.stop();
+		} else if(time < 12){
+			drive.arcade(0.75, 0);
+		} else {
+			drive.stop();
 		}
 	}
 
