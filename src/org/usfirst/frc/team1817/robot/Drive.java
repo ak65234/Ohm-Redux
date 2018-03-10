@@ -3,9 +3,9 @@ package org.usfirst.frc.team1817.robot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
-// TODO Implement voltage ramping
 public class Drive implements Runnable {
     private final double DEADZONE = 0.1;
+    private final double RAMP = 0.08;
 
     private int state;
     private final int DISABLED = 0;
@@ -37,6 +37,8 @@ public class Drive implements Runnable {
             switch (state) {
             case DISABLED:
                 chassis.stopMotor();
+                leftOrPower = 0.0;
+                rightOrTurn = 0.0;
                 break;
             case ENABLED:
                 drive();
@@ -71,14 +73,22 @@ public class Drive implements Runnable {
 
     public void tank(double left, double right) {
         mode = TANK;
-        leftOrPower = left;
-        rightOrTurn = right;
+
+        double deltaL = Math.max(Math.min(left - leftOrPower, RAMP), -RAMP);
+        double deltaR = Math.max(Math.min(right - rightOrTurn, RAMP), -RAMP);
+
+        leftOrPower += deltaL;
+        rightOrTurn += deltaR;
     }
 
     public void arcade(double power, double turn) {
         mode = ARCADE;
-        leftOrPower = power;
-        rightOrTurn = turn;
+
+        double deltaP = Math.max(Math.min(power - leftOrPower, RAMP), -RAMP);
+        double deltaT = Math.max(Math.min(turn - rightOrTurn, RAMP), -RAMP);
+
+        leftOrPower += deltaP;
+        rightOrTurn += deltaT;
     }
 
     private double deadband(double value) {
