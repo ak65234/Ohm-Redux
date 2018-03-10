@@ -3,7 +3,6 @@ package org.usfirst.frc.team1817.robot;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 
-// TODO Manual override
 public class Fingers implements Runnable {
     private final double DEADZONE = 0.1;
 
