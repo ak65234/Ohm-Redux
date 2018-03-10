@@ -6,12 +6,12 @@ Controls
   * RIGHT Y       -
   * LEFT TRIGGER  - Fingers In
   * RIGHT TRIGGER - Fingers Out
-  * A             - Hand Out
-  * B             -
-  * X             - Hand Score
-  * Y             - Hand In
   * LEFT BUMPER   -
   * RIGHT BUMPER  - Toggle Shift
+  * A             -
+  * B             -
+  * X             -
+  * Y             -
   * DPAD UP       -
   * DPAD DOWN     -
   * DPAD LEFT     -
@@ -23,12 +23,12 @@ Controls
   * RIGHT Y       -
   * LEFT TRIGGER  - Hand In (Manual)
   * RIGHT TRIGGER - Hand Out (Manual)
-  * A             -
-  * B             -
-  * X             -
-  * Y             -
   * LEFT BUMPER   -
   * RIGHT BUMPER  -
+  * A             - Hand Out
+  * B             -
+  * X             - Hand Score
+  * Y             - Hand In
   * DPAD UP       -
   * DPAD DOWN     -
   * DPAD LEFT     -
