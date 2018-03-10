@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1817.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -14,6 +14,7 @@ public class Robot extends TimedRobot {
 	private Hardware hw;
 	private Controls ctrls;
 	private Drive drive;
+	private Hand hand;
 
 	@Override
 	public void robotInit() {
@@ -25,6 +26,7 @@ public class Robot extends TimedRobot {
 		ctrls = new Controls();
 
 		drive = new Drive(hw);
+		hand = new Hand(hw);
 	}
 
 	@Override
@@ -55,14 +57,26 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopPeriodic() {
-		double LY = -ctrls.driver.getY(Hand.kLeft);
-		double RX = ctrls.driver.getX(Hand.kRight);
+		double LY = -ctrls.driver.getY(GenericHID.Hand.kLeft);
+		double RX = ctrls.driver.getX(GenericHID.Hand.kRight);
+		boolean A = ctrls.driver.getAButton();
+		boolean X = ctrls.driver.getXButton();
+		boolean Y = ctrls.driver.getYButton();
 
 		drive.arcade(LY, RX);
+
+		if(A){
+			hand.extend();
+		} else if(X){
+			hand.score();
+		} else if (Y){
+			hand.stow();
+		}
 	}
 
 	@Override
 	public void disabledInit() {
 		drive.disable();
+		hand.disable();
 	}
 }
