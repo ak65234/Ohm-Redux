@@ -10,7 +10,7 @@ public class Hand implements Runnable {
 	private final int SCORE_THRESH = -90; // Ideally, half way between
 	private final double DEADBAND = 0.05;
 	private final double REDUCED = 0.35;
-	private final double MAX = 0.75;
+	private final double MAX = 0.85;
 	private final double RATE = 50.0;
 
 	private int state;
@@ -81,8 +81,9 @@ public class Hand implements Runnable {
 	private void setPosition(double value) {
 		double current = wristEncoder.getDistance();
 		double speed = value - current;
+
 		speed /= RATE;
-		if(current < SCORE_THRESH) {
+		if (state == STOW && current < SCORE_THRESH || state != STOW && current > SCORE_THRESH) {
 			speed = normalize(speed, MAX);
 		} else {
 			speed = normalize(speed, REDUCED);
@@ -100,14 +101,14 @@ public class Hand implements Runnable {
 		return Math.abs(value) > DEADBAND ? value : 0;
 	}
 
-    private boolean validRange(double value){
-        return Math.abs(value) > DEADBAND;
-    }
+	private boolean validRange(double value) {
+		return Math.abs(value) > DEADBAND;
+	}
 
-    public void manualMove(double value){
-        if(validRange(value)){
+	public void manualMove(double value) {
+		if (validRange(value)) {
 			disable();
 			wrist.set(value);
-        }
-    }
+		}
+	}
 }
