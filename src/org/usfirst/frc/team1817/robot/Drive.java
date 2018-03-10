@@ -51,15 +51,12 @@ public class Drive implements Runnable {
     }
 
     public void drive() {
-        leftOrPower = deadband(leftOrPower);
-        rightOrTurn = deadband(rightOrTurn);
-
         switch (mode) {
         case TANK:
-            chassis.tankDrive(leftOrPower, rightOrTurn);
+            chassis.tankDrive(deadband(leftOrPower), deadband(rightOrTurn));
             break;
         case ARCADE:
-            chassis.arcadeDrive(leftOrPower, rightOrTurn);
+            chassis.arcadeDrive(deadband(leftOrPower), deadband(rightOrTurn));
             break;
         case STOP:
             chassis.stopMotor();
