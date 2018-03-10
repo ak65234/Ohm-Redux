@@ -50,11 +50,11 @@ public class Shift implements Runnable {
 
     public void shift() {
         if (lowGear) {
-            front.setAngle(0);
-            back.setAngle(100);
-        } else {
             front.setAngle(110);
             back.setAngle(0);
+        } else {
+            front.setAngle(0);
+            back.setAngle(100);
         }
     }
 
