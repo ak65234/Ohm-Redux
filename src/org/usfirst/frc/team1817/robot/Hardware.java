@@ -12,7 +12,7 @@ public class Hardware {
     private final double DISTANCE_PER_PULSE = Math.PI * 6.0 / 250.0;
 
     public final DifferentialDrive chassis;
-    public final Encoder leftEncoder, rightEncoder;
+    public final Encoder leftEncoder, rightEncoder, wristEncoder;
     public final ADXRS450_Gyro gyro;
     public final PowerDistributionPanel pdp;
     public final Servo frontShifter, backShifter;
@@ -42,6 +42,8 @@ public class Hardware {
 
         rightEncoder = new Encoder(2, 3);
         rightEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
+
+        wristEncoder = new Encoder(4, 5);
 
         pdp = new PowerDistributionPanel();
 
