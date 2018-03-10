@@ -3,13 +3,13 @@ package org.usfirst.frc.team1817.robot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
+// TODO Implement voltage ramping
 public class Drive implements Runnable {
     private final double DEADZONE = 0.1;
 
     private int state;
     private final int DISABLED = 0;
-    private final int AUTO = 1;
-    private final int TELEOP = 2;
+    private final int ENABLED = 1;
 
     private int mode;
     private final int TANK = 0;
@@ -38,10 +38,7 @@ public class Drive implements Runnable {
             case DISABLED:
                 chassis.stopMotor();
                 break;
-            case AUTO:
-                drive();
-                break;
-            case TELEOP:
+            case ENABLED:
                 drive();
                 break;
             }
@@ -68,12 +65,8 @@ public class Drive implements Runnable {
         state = DISABLED;
     }
 
-    public void auto() {
-        state = AUTO;
-    }
-
-    public void teleop() {
-        state = TELEOP;
+    public void enable() {
+        state = ENABLED;
     }
 
     public void tank(double left, double right) {

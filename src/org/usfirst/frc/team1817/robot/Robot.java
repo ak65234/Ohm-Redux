@@ -50,14 +50,14 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-		drive.teleop();
+		drive.enable();
 	}
 
 	@Override
 	public void teleopPeriodic() {
 		double LY = -ctrls.driver.getY(Hand.kLeft);
 		double RX = ctrls.driver.getX(Hand.kRight);
-		
+
 		drive.arcade(LY, RX);
 	}
 
