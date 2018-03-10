@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1817.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -12,6 +13,7 @@ public class Robot extends TimedRobot {
 
 	private Hardware hw;
 	private Controls ctrls;
+	private Drive drive;
 
 	@Override
 	public void robotInit() {
@@ -21,6 +23,8 @@ public class Robot extends TimedRobot {
 
 		hw = new Hardware();
 		ctrls = new Controls();
+
+		drive = new Drive(hw);
 	}
 
 	@Override
@@ -45,10 +49,22 @@ public class Robot extends TimedRobot {
 	}
 
 	@Override
-	public void teleopPeriodic() {
+	public void teleopInit() {
+		drive.teleop();
 	}
 
 	@Override
-	public void testPeriodic() {
+	public void teleopPeriodic() {
+		double LY = -ctrls.driver.getY(Hand.kLeft);
+		double RX = ctrls.driver.getX(Hand.kRight);
+
+		SmartDashboard.putNumber("Left Y", LY);
+		SmartDashboard.putNumber("Right X", RX);
+		drive.arcade(LY, RX);
+	}
+
+	@Override
+	public void disabledInit() {
+		drive.disable();
 	}
 }
