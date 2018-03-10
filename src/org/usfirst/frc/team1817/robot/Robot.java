@@ -14,13 +14,13 @@ public class Robot extends TimedRobot {
 
 	private Hardware hw;
 	private Controls ctrls;
+	private Auto auto;
 	private Drive drive;
 	private Shift shift;
 	private Hand hand;
 	private Fingers fingers;
 
 	private Toggle shiftToggle;
-	private Timer timer;
 
 	@Override
 	public void robotInit() {
@@ -37,47 +37,19 @@ public class Robot extends TimedRobot {
 		fingers = new Fingers(hw);
 
 		shiftToggle = new Toggle();
-		
-		timer = new Timer();
+
+		auto = new Auto(hw, drive, shift, hand, fingers);
 	}
 
 	@Override
 	public void autonomousInit() {
-		// m_autoSelected = m_chooser.getSelected();
-		// // m_autoSelected = SmartDashboard.getString("Auto Selector",
-		// // 		kDefaultAuto);
-		// System.out.println("Auto selected: " + m_autoSelected);
-		shift.enable();
-		shift.setInHighGear(false);
-
-		timer.reset();
-		timer.start();
-	}
-
-	@Override
-	public void autonomousPeriodic() {
-	// 	switch (m_autoSelected) {
-	// 	case kCustomAuto:
-	// 		// Put custom auto code here
-	// 		break;
-	// 	case kDefaultAuto:
-	// 	default:
-	// 		// Put default auto code here
-	// 		break;
-	// 	}
-		double time = timer.get();
-
-		if(time < 7.5){
-			drive.stop();
-		} else if(time < 12){
-			drive.arcade(0.75, 0);
-		} else {
-			drive.stop();
-		}
+		auto.start();
 	}
 
 	@Override
 	public void teleopInit() {
+		auto.stop();
+
 		drive.enable();
 		shift.enable();
 		fingers.enable();
@@ -92,12 +64,12 @@ public class Robot extends TimedRobot {
 		double dLT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kLeft);
 		double dRT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kRight);
 		boolean RB = ctrls.driver.getBumper(GenericHID.Hand.kRight);
-		boolean A = ctrls.driver.getAButton();
-		boolean X = ctrls.driver.getXButton();
-		boolean Y = ctrls.driver.getYButton();
 
 		double mLT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kLeft);
 		double mRT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kRight);
+		boolean A = ctrls.manipulator.getAButton();
+		boolean X = ctrls.manipulator.getXButton();
+		boolean Y = ctrls.manipulator.getYButton();
 
 		drive.arcade(-LY, RX);
 
@@ -114,7 +86,7 @@ public class Robot extends TimedRobot {
 			hand.manualMove(mLT - mRT);
 		}
 
-		fingers.setSpeed(dLT - dRT);
+		fingers.setSpeed(dRT - dLT);
 	}
 
 	@Override
