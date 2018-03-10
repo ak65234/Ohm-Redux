@@ -9,6 +9,7 @@ public class Hand implements Runnable {
 	private final int EXTENDED_THRESH = -180;
 	private final int SCORE_THRESH = -90; // Ideally, half way between
 	private final double DEADBAND = 0.05;
+	private final double REDUCED = 0.35;
 	private final double MAX = 0.75;
 	private final double RATE = 50.0;
 
@@ -78,9 +79,14 @@ public class Hand implements Runnable {
 	}
 
 	private void setPosition(double value) {
-		double speed = value - wristEncoder.getDistance();
+		double current = wristEncoder.getDistance();
+		double speed = value - current;
 		speed /= RATE;
-		speed = normalize(speed, MAX);
+		if(current < SCORE_THRESH) {
+			speed = normalize(speed, MAX);
+		} else {
+			speed = normalize(speed, REDUCED);
+		}
 		speed = deadBand(speed);
 
 		wrist.set(speed);
