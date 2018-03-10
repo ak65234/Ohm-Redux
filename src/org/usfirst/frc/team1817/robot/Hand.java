@@ -3,6 +3,7 @@ package org.usfirst.frc.team1817.robot;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Hand implements Runnable {
 	private final int STOWED_THRESH = 0;
@@ -36,17 +37,18 @@ public class Hand implements Runnable {
 	@Override
 	public void run() {
 		while (!Thread.interrupted()) {
+			SmartDashboard.putNumber("Wrist Encoder", wristEncoder.getDistance());
 			switch (state) {
 			case DISABLED:
 				wrist.stopMotor();
 
-				if (wristEncoder.getDistance() < -10)
+				if (wristEncoder.getDistance() > -10)
 					wristEncoder.reset();
 				break;
 			case STOW:
 				setPosition(STOWED_THRESH);
 
-				if (wristEncoder.getDistance() < -10) {
+				if (wristEncoder.getDistance() > -10) {
 					state = 0;
 				}
 				break;
@@ -83,7 +85,7 @@ public class Hand implements Runnable {
 		double speed = value - current;
 
 		speed /= RATE;
-		if (state == STOW && current < SCORE_THRESH || state != STOW && current > SCORE_THRESH) {
+		if (state == SCORE || state == STOW && current < SCORE_THRESH / 2.0 || state == EXTEND && current > SCORE_THRESH) {
 			speed = normalize(speed, MAX);
 		} else {
 			speed = normalize(speed, REDUCED);
