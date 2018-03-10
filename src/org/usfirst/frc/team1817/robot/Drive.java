@@ -14,6 +14,7 @@ public class Drive implements Runnable {
     private int mode;
     private final int TANK = 0;
     private final int ARCADE = 1;
+    private final int STOP = 2;
 
     private DifferentialDrive chassis;
     private double leftOrPower, rightOrTurn;
@@ -60,6 +61,11 @@ public class Drive implements Runnable {
         case ARCADE:
             chassis.arcadeDrive(leftOrPower, rightOrTurn);
             break;
+        case STOP:
+            chassis.stopMotor();
+            leftOrPower = 0;
+            rightOrTurn = 0;
+            break;
         }
     }
 
@@ -89,6 +95,10 @@ public class Drive implements Runnable {
 
         leftOrPower += deltaP;
         rightOrTurn += deltaT;
+    }
+
+    public void stop() {
+        mode = STOP;
     }
 
     private double deadband(double value) {
