@@ -11,12 +11,12 @@ public class Auto implements Runnable {
     private final String SWITCH_AUTO = "Switch Test";
 
     private final int ROBOT_LENGTH = 38;
-    private final int DISTANCE_TO_SWITCH_FRONT = 144 - ROBOT_LENGTH;
-    private final int DISTANCE_TO_SWITCH_MID = 170 - ROBOT_LENGTH / 2;
+    // private final int DISTANCE_TO_SWITCH_FRONT = 144 - ROBOT_LENGTH;
+    // private final int DISTANCE_TO_SWITCH_MID = 170 - ROBOT_LENGTH / 2;
     private final int DISTANCE_TO_SWITCH_BACK = 196;
-    private final int SWITCH_LENGTH = 154;
+    // private final int SWITCH_LENGTH = 154;
     private final int LEFT_TURN = -90;
-    private final int RIGHT_TURN = 90;
+    // private final int RIGHT_TURN = 90;
 
     private int state;
     private final int DISABLED = 0;
