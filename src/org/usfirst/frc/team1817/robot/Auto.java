@@ -13,7 +13,7 @@ public class Auto implements Runnable {
     private final int ROBOT_LENGTH = 38;
     private final int DISTANCE_TO_SWITCH_FRONT = 144 - ROBOT_LENGTH;
     private final int DISTANCE_TO_SWITCH_MID = 170 - ROBOT_LENGTH / 2;
-    private final int DISTANCE_TO_SWITCH_END = 196;
+    private final int DISTANCE_TO_SWITCH_BACK = 196;
     private final int SWITCH_LENGTH = 154;
     private final int LEFT_TURN = -90;
     private final int RIGHT_TURN = 90;
@@ -61,19 +61,12 @@ public class Auto implements Runnable {
             case DISABLED:
                 break;
             case ENABLED:
-                switch(auto.getSelected()){
-                    case TIMED_CROSS:
-                        timedCross();
-                        break;
-                    case SWITCH_AUTO:
-                        switchAuto();
-                        break;
-                }
+                runAuto();
                 break;
             }
 
             if (!ds.isAutonomous()) {
-                state = DISABLED;
+                stop();
             }
 
             Timer.delay(0.005);
@@ -86,18 +79,32 @@ public class Auto implements Runnable {
 
     public void start() {
         state = ENABLED;
-        timer.start();
+
         timer.reset();
+        timer.start();
     }
 
     public void stop() {
         state = DISABLED;
+
         timer.stop();
         timer.reset();
     }
 
-    public void timedCross() {
+    public void runAuto(){
         double time = timer.get();
+        switch(auto.getSelected()){
+            case TIMED_CROSS:
+                timedCross(time);
+                break;
+            case SWITCH_AUTO:
+                switchAuto(time);
+                break;
+        }
+    }
+
+    public void timedCross(double time) {
+        shift.setInHighGear(false);
 
         if (time < 7.5) {
             drive.stop();
@@ -108,11 +115,9 @@ public class Auto implements Runnable {
         }
     }
 
-    public void switchAuto() {
-        double time = timer.get();
-
+    public void switchAuto(double time) {
         if (time < 5.0) {
-            gyroDriveForward(0.75, DISTANCE_TO_SWITCH_END + ROBOT_LENGTH / 2);
+            gyroDriveForward(0.75, DISTANCE_TO_SWITCH_BACK + ROBOT_LENGTH / 2);
         } else if(time < 7.5){
             gyroTurn(0.75, LEFT_TURN);
         }
@@ -138,6 +143,5 @@ public class Auto implements Runnable {
         double turn = (angle - ang) / 10.0;
 
         drive.arcade(0, normalize(turn, speed));
-
     }
 }
