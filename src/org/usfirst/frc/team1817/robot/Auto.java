@@ -120,6 +120,8 @@ public class Auto implements Runnable {
             gyroDriveForward(0.75, DISTANCE_TO_SWITCH_BACK + ROBOT_LENGTH / 2);
         } else if(time < 7.5){
             gyroTurn(0.75, LEFT_TURN);
+        } else {
+            drive.stop();
         }
     }
 
