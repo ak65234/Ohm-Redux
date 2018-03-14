@@ -32,6 +32,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
+		enableThreads();
+
 		auto.start();
 	}
 
@@ -39,9 +41,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		auto.stop();
 
-		drive.enable();
-		shift.enable();
-		fingers.enable();
+		enableThreads();
 
 		shiftToggle.set(false);
 	}
@@ -80,7 +80,18 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledInit() {
+		disableThreads();
+	}
+
+	public void enableThreads() {
+		drive.enable();
+		shift.enable();
+		fingers.enable();
+	}
+
+	public void disableThreads() {
 		drive.disable();
+		shift.disable();
 		hand.disable();
 		fingers.disable();
 	}
