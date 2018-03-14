@@ -26,8 +26,8 @@ public class Auto implements Runnable {
     private final Hardware hw;
     private final Drive drive;
     private final Shift shift;
-    private final Hand hand;
-    private final Fingers fingers;
+    // private final Hand hand;
+    // private final Fingers fingers;
     private final Timer timer;
     private final Thread t;
 
@@ -43,8 +43,8 @@ public class Auto implements Runnable {
         this.hw = hw;
         this.drive = drive;
         this.shift = shift;
-        this.hand = hand;
-        this.fingers = fingers;
+        // this.hand = hand;
+        // this.fingers = fingers;
 
         timer = new Timer();
         timer.start();
