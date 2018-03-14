@@ -73,10 +73,6 @@ public class Auto implements Runnable {
         }
     }
 
-    public void disable() {
-        state = DISABLED;
-    }
-
     public void start() {
         state = ENABLED;
 
