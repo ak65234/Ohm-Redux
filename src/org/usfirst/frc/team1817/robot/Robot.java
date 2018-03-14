@@ -48,28 +48,28 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopPeriodic() {
-		double LY = ctrls.driver.getY(GenericHID.Hand.kLeft);
-		double RX = ctrls.driver.getX(GenericHID.Hand.kRight);
+		double dLY = ctrls.driver.getY(GenericHID.Hand.kLeft);
+		double dRX = ctrls.driver.getX(GenericHID.Hand.kRight);
 		double dLT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kLeft);
 		double dRT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kRight);
-		boolean RB = ctrls.driver.getBumper(GenericHID.Hand.kRight);
+		boolean dRB = ctrls.driver.getBumper(GenericHID.Hand.kRight);
 
 		double mLT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kLeft);
 		double mRT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kRight);
-		boolean A = ctrls.manipulator.getAButton();
-		boolean X = ctrls.manipulator.getXButton();
-		boolean Y = ctrls.manipulator.getYButton();
+		boolean mA = ctrls.manipulator.getAButton();
+		boolean mX = ctrls.manipulator.getXButton();
+		boolean mY = ctrls.manipulator.getYButton();
 
-		drive.arcade(-LY, RX);
+		drive.arcade(-dLY, dRX);
 
-		shiftToggle.update(RB);
+		shiftToggle.update(dRB);
 		shift.setInHighGear(shiftToggle.get());
 
-		if (A) {
+		if (mA) {
 			hand.extend();
-		} else if (X) {
+		} else if (mX) {
 			hand.score();
-		} else if (Y) {
+		} else if (mY) {
 			hand.stow();
 		} else {
 			hand.manualMove(mLT - mRT);
