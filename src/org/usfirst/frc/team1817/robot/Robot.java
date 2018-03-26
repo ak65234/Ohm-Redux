@@ -32,7 +32,6 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
-		shiftToggle.set(false);
 		enableThreads();
 
 		auto.start();
@@ -42,6 +41,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		auto.stop();
 
+		shiftToggle.set(false);
 		hand.stow();
 		
 		enableThreads();

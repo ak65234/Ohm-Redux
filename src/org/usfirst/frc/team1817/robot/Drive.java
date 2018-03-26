@@ -59,9 +59,11 @@ public class Drive implements Runnable {
             chassis.tankDrive(deadband(leftOrPower), deadband(rightOrTurn));
             break;
         case ARCADE:
+        	/*
         	if(pdp.getTotalCurrent()>120) {
         		capCurrentDraw();
         	}
+        	*/
             chassis.arcadeDrive(deadband(leftOrPower), deadband(rightOrTurn));
             break;
         case STOP:
@@ -100,14 +102,12 @@ public class Drive implements Runnable {
 		rightOrTurn += deltaT;
 	}
 
-	/**
-	 * If the current has exceeded a cap, the total voltage will immediately be
-	 * halved to conserve battery
-	 */
+	/*
 	private void capCurrentDraw() {
 		leftOrPower /= 2;
 		rightOrTurn /= 2;
 	}
+	*/
 
 	public void stop() {
 		mode = STOP;
