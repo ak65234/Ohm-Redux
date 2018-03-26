@@ -1,6 +1,9 @@
 package org.usfirst.frc.team1817.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Servo;
@@ -18,6 +21,7 @@ public class Hardware {
     public final Servo frontShifter, backShifter;
     public final SpeedControllerGroup intake;
     public final VictorSP wrist;
+    public final UsbCamera camera;
 
     public Hardware() {
         VictorSP left = new VictorSP(0);
@@ -51,6 +55,14 @@ public class Hardware {
         if (gyro.isConnected()) {
             gyro.calibrate();
         }
+
+        camera=CameraServer.getInstance().startAutomaticCapture();
+        camera.setFPS(60);
+        camera.setResolution(240,480);
+        //camera.setExposureManual(40);
+        //camera.setBrightness(50);
+        //camera.setWhiteBalanceManual(50);
+        
     }
 
     public void resetSensors(){
