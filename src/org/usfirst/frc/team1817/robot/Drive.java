@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1817.robot;
 
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
+// import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -18,7 +18,7 @@ public class Drive implements Runnable {
 	private final int STOP = 2;
 
 	private DifferentialDrive chassis;
-	private PowerDistributionPanel pdp;
+	// private PowerDistributionPanel pdp;
 	private double leftOrPower, rightOrTurn;
 	private final Thread t;
 
@@ -27,7 +27,7 @@ public class Drive implements Runnable {
 		mode = ARCADE;
 
 		this.chassis = hw.chassis;
-		this.pdp = hw.pdp;
+		// this.pdp = hw.pdp;
 
 		leftOrPower = 0.0;
 		rightOrTurn = 0.0;
@@ -54,25 +54,21 @@ public class Drive implements Runnable {
 	}
 
 	public void drive() {
-        switch (mode) {
-        case TANK:
-            chassis.tankDrive(deadband(leftOrPower), deadband(rightOrTurn));
-            break;
-        case ARCADE:
-        	/*
-        	if(pdp.getTotalCurrent()>120) {
-        		capCurrentDraw();
-        	}
-        	*/
-            chassis.arcadeDrive(deadband(leftOrPower), deadband(rightOrTurn));
-            break;
-        case STOP:
-            chassis.stopMotor();
-            leftOrPower = 0;
-            rightOrTurn = 0;
-            break;
-        }
-    }
+		switch (mode) {
+		case TANK:
+			chassis.tankDrive(deadband(leftOrPower), deadband(rightOrTurn));
+			break;
+		case ARCADE:
+			// checkCurrent();
+			chassis.arcadeDrive(deadband(leftOrPower), deadband(rightOrTurn));
+			break;
+		case STOP:
+			chassis.stopMotor();
+			leftOrPower = 0;
+			rightOrTurn = 0;
+			break;
+		}
+	}
 
 	public void disable() {
 		state = DISABLED;
@@ -102,12 +98,16 @@ public class Drive implements Runnable {
 		rightOrTurn += deltaT;
 	}
 
-	/*
-	private void capCurrentDraw() {
-		leftOrPower /= 2;
-		rightOrTurn /= 2;
-	}
-	*/
+	// private void checkCurrent() {
+	// 	if (pdp.getTotalCurrent() > 120) {
+	// 		capCurrentDraw();
+	// 	}
+	// }
+
+	// private void capCurrentDraw() {
+	// 	leftOrPower /= 2;
+	// 	rightOrTurn /= 2;
+	// }
 
 	public void stop() {
 		mode = STOP;
