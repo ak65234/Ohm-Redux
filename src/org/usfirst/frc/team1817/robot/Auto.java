@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;;
 
 public class Auto implements Runnable {
-	
+
 	//Autonomous selectors
 	private final SendableChooser<String> AUTO = new SendableChooser<>();
 	private final String TIMED_CROSS = "Timed Cross Line";
@@ -31,8 +31,8 @@ public class Auto implements Runnable {
 	private final int HYPOTONUSE = 200;
 
 	//Robot speeds
-	private double DRIVE_SPEED = 0.75;
-	private double TURN_SPEED = 0.65;
+	private final double DRIVE_SPEED = 0.75;
+	private final double TURN_SPEED = 0.65;
 
 	//States
 	private int state;
@@ -49,6 +49,8 @@ public class Auto implements Runnable {
 	private final Timer timer;
 	private final Thread t;
 
+	private boolean hasError = false;
+
 	public Auto(Hardware hw, Drive drive, Shift shift, Hand hand, Fingers fingers) {
 		state = DISABLED;
 
@@ -57,13 +59,13 @@ public class Auto implements Runnable {
 		AUTO.addDefault(TIMED_CROSS, TIMED_CROSS);
 		AUTO.addObject(SWITCH_AUTO, SWITCH_AUTO);
 
-		SmartDashboard.putData(AUTO);
+		SmartDashboard.putData("Auto", AUTO);
 
 		STATION.addDefault(MIDDLE_STATION, MIDDLE_STATION);
 		STATION.addObject(RIGHT_STATION, RIGHT_STATION);
 		STATION.addObject(LEFT_STATION, LEFT_STATION);
 
-		SmartDashboard.putData(STATION);
+		SmartDashboard.putData("Station", STATION);
 
 		this.hw = hw;
 		this.drive = drive;
@@ -79,6 +81,7 @@ public class Auto implements Runnable {
 	}
 
 	public void run() {
+		shift.setInHighGear(false);
 		while (!Thread.interrupted()) {
 			SmartDashboard.putNumber("AUTO STATE", state);
 
@@ -114,15 +117,17 @@ public class Auto implements Runnable {
 
 	public void runAuto() {
 		double time = timer.get();
+		String station = STATION.getSelected();
 		switch (AUTO.getSelected()) {
 		case TIMED_CROSS:
 			timedCross(time);
 			break;
 		case SWITCH_AUTO:
-			if (STATION.getSelected() == MIDDLE_STATION) {
-				middleSwitchAuto(time);
-			} else if (switchLocation() == STATION.getSelected().charAt(0)) { //Same side
+			//Refactored to call switchLocation() every iteration to allow for recovery of an error
+			if (switchLocation() == station.charAt(0)) {
 				sameSideSwitchAuto(time);
+			} else if (station == MIDDLE_STATION) {
+				middleSwitchAuto(time);
 			} else {
 				oppositeSideSwitchAuto(time);
 			}
@@ -131,8 +136,6 @@ public class Auto implements Runnable {
 	}
 
 	private void timedCross(double time) {
-		shift.setInHighGear(false);
-
 		if (time < 7.5) {
 			drive.stop();
 		} else if (time < 12) {
@@ -143,72 +146,89 @@ public class Auto implements Runnable {
 	}
 
 	private void middleSwitchAuto(double time) {
-		if (time < 2.5) {
-			gyroTurn(TURN_SPEED, selectAngle());
-		} else if (time < 7.5) {
-			gyroDriveForward(DRIVE_SPEED, HYPOTONUSE);
-		} else if (time < 10) {
-			gyroTurn(TURN_SPEED, -selectAngle());
-		} else if (time < 11) {
-			drive.arcade(0.5, 0);
-		} else if (time < 12.5) {
-			drive.stop();
-			hand.score();
+		if (!hasError) {
+			if (time < 2.5) {
+				gyroTurn(TURN_SPEED, selectAngle());
+			} else if (time < 7.5) {
+				gyroDriveForward(DRIVE_SPEED, HYPOTONUSE);
+			} else if (time < 10) {
+				gyroTurn(TURN_SPEED, -selectAngle());
+			} else if (time < 11) {
+				drive.arcade(0.5, 0);
+			} else if (time < 12.5) {
+				drive.stop();
+				hand.score();
+			} else {
+				fingers.setSpeed(1.0);
+			}
 		} else {
-			fingers.setSpeed(1.0);
+			timer.reset(); //Make sure that the robot starts in at the correct action if an error occurs at the beginning
 		}
 	}
 
 	private void sameSideSwitchAuto(double time) {
 		if (time < 5.0) {
 			gyroDriveForward(DRIVE_SPEED, DISTANCE_TO_SWITCH_MID);
-		} else if (time < 7.5) {
+		} else if (time < 7.5 && !hasError) {
 			gyroTurn(TURN_SPEED, selectAngle());
-		} else if (time < 8.5) {
+		} else if (time < 8.5 && !hasError) {
 			drive.arcade(0.5, 0);
-		} else if (time < 10) {
+		} else if (time < 10 && !hasError) {
 			drive.stop();
 			hand.score();
 		} else {
-			fingers.setSpeed(1.0);
+			if (!hasError)
+				fingers.setSpeed(1.0);
 		}
 	}
 
 	private void oppositeSideSwitchAuto(double time) {
-		if (time < 5.0) {
+		if (time < 4.0) {
 			gyroDriveForward(DRIVE_SPEED, DISTANCE_TO_SWITCH_BACK + ROBOT_LENGTH / 2);
-		} else if (time < 7.5) {
+		} else if (time < 6.5) {
 			gyroTurn(TURN_SPEED, selectAngle());
-		} else if(time<10.5) {
-			gyroDriveForward(DRIVE_SPEED+0.15, SWITCH_LENGTH);
-		} else if(time<11.5) {
+		} else if (time < 9.5 && !hasError) {
+			gyroDriveForward(DRIVE_SPEED + 0.15, SWITCH_LENGTH);
+		} else if (time < 11.5 && !hasError) {
+			gyroTurn(TURN_SPEED, selectAngle());
+		} else if (time < 12.5 && !hasError) {
 			drive.arcade(0.5, 0);
-		} else if(time<13) {
-			drive.stop();
 			hand.score();
 		} else {
-			fingers.setSpeed(1.0);
+			drive.stop();
+			if (!hasError)
+				fingers.setSpeed(1.0);
 		}
 	}
 
 	private char switchLocation() {
-		return DriverStation.getInstance().getGameSpecificMessage().charAt(0);
+		String locations = DriverStation.getInstance().getGameSpecificMessage();
+		if (locations.length() == 3) {
+			hasError = false; //There is a chance that the error is recoverable later on.
+			return locations.charAt(0);
+		}
+		hasError = true;
+		return 'E'; //If the GameSpecificMessage is empty return an error state
 	}
 
 	private int selectAngle() {
-		boolean isLeft = switchLocation() == 'L';
-		switch (STATION.getSelected()) {
-		case (MIDDLE_STATION):
-			if (isLeft) {
-				return MID_LEFT;
-			} else {
-				return MID_RIGHT;
+		char location = switchLocation();
+		if (location != 'E') {
+			boolean isLeft = (location == 'L');
+			switch (STATION.getSelected()) {
+			case (MIDDLE_STATION):
+				if (isLeft) {
+					return MID_LEFT;
+				} else {
+					return MID_RIGHT;
+				}
+			case (LEFT_STATION):
+				return RIGHT_TURN;
+			default:
+				return LEFT_TURN;
 			}
-		case (LEFT_STATION):
-			return RIGHT_TURN;
-		default:
-			return LEFT_TURN;
 		}
+		return 0; //In the event that there is an error do not turn
 	}
 
 	private double normalize(double value, double max) {

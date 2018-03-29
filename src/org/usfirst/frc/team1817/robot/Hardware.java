@@ -51,6 +51,7 @@ public class Hardware {
         if (gyro.isConnected()) {
             gyro.calibrate();
         }
+
     }
 
     public void resetSensors(){

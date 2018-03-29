@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.GenericHID;
 
 public class Robot extends TimedRobot {
-
+	
 	private Hardware hw;
 	private Controls ctrls;
 	private Auto auto;
@@ -41,9 +41,11 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		auto.stop();
 
+		shiftToggle.set(false);
+		hand.stow();
+		
 		enableThreads();
 
-		shiftToggle.set(false);
 	}
 
 	@Override
