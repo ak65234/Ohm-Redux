@@ -48,10 +48,7 @@ public class Hardware {
         pdp = new PowerDistributionPanel();
 
         gyro = new ADXRS450_Gyro();
-        if (gyro.isConnected()) {
-            gyro.calibrate();
-        }
-
+        gyro.calibrate();
     }
 
     public void resetSensors(){
