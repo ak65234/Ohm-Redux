@@ -81,7 +81,6 @@ public class Auto implements Runnable {
 	}
 
 	public void run() {
-		shift.setInHighGear(false);
 		while (!Thread.interrupted()) {
 			SmartDashboard.putNumber("AUTO STATE", state);
 
@@ -118,6 +117,10 @@ public class Auto implements Runnable {
 	public void runAuto() {
 		double time = timer.get();
 		String station = STATION.getSelected();
+
+		// Every autonomous will run in low gear the entire time
+		shift.setInHighGear(false);
+
 		switch (AUTO.getSelected()) {
 		case TIMED_CROSS:
 			timedCross(time);
