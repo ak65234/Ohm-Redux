@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1817.robot;
 
-// import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,7 +19,7 @@ public class Drive implements Runnable {
 	private final int STOP = 2;
 
 	private DifferentialDrive chassis;
-	// private PowerDistributionPanel pdp;
+	private PowerDistributionPanel pdp;
 	private double leftOrPower, rightOrTurn;
 	private final Thread t;
 
@@ -30,7 +30,7 @@ public class Drive implements Runnable {
 		mode = ARCADE;
 
 		this.chassis = hw.chassis;
-		// this.pdp = hw.pdp;
+		this.pdp = hw.pdp;
 
 		leftOrPower = 0.0;
 		rightOrTurn = 0.0;
