@@ -1,12 +1,13 @@
 package org.usfirst.frc.team1817.robot;
 
-// import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive implements Runnable {
 	private final double DEADZONE = 0.1;
-	private final double RAMP = 0.08;
+	private final double RAMP = 0.1;
 
 	private int state;
 	private final int DISABLED = 0;
@@ -18,16 +19,18 @@ public class Drive implements Runnable {
 	private final int STOP = 2;
 
 	private DifferentialDrive chassis;
-	// private PowerDistributionPanel pdp;
+	private PowerDistributionPanel pdp;
 	private double leftOrPower, rightOrTurn;
 	private final Thread t;
+
+	private double throttleDown = 0.04;
 
 	public Drive(Hardware hw) {
 		state = DISABLED;
 		mode = ARCADE;
 
 		this.chassis = hw.chassis;
-		// this.pdp = hw.pdp;
+		this.pdp = hw.pdp;
 
 		leftOrPower = 0.0;
 		rightOrTurn = 0.0;
@@ -59,8 +62,11 @@ public class Drive implements Runnable {
 			chassis.tankDrive(deadband(leftOrPower), deadband(rightOrTurn));
 			break;
 		case ARCADE:
-			// checkCurrent();
-			chassis.arcadeDrive(deadband(leftOrPower), deadband(rightOrTurn));
+			SmartDashboard.putNumber("Amperage draw", getDriveCurrent());
+			SmartDashboard.putNumber("Throttle down", throttleDown);
+			SmartDashboard.putNumber("Forward", leftOrPower);
+			SmartDashboard.putNumber("Turn", rightOrTurn);
+			chassis.arcadeDrive(deadband(-leftOrPower), deadband(-rightOrTurn));
 			break;
 		case STOP:
 			chassis.stopMotor();
@@ -90,24 +96,50 @@ public class Drive implements Runnable {
 
 	public void arcade(double power, double turn) {
 		mode = ARCADE;
+		if (getDriveCurrent() < 120 || throttleDown<0.0009) {
+			double deltaP = Math.max(Math.min(power - leftOrPower, RAMP), -RAMP);
+			double deltaT = Math.max(Math.min(turn - rightOrTurn, RAMP), -RAMP);
 
-		double deltaP = Math.max(Math.min(power - leftOrPower, RAMP), -RAMP);
-		double deltaT = Math.max(Math.min(turn - rightOrTurn, RAMP), -RAMP);
-
-		leftOrPower += deltaP;
-		rightOrTurn += deltaT;
+			leftOrPower += deltaP;
+			rightOrTurn += deltaT;
+		} else { //Throttle down the gearbox to conserve power
+			double deltaP,deltaT;
+			if(leftOrPower>0) {
+				deltaP=-throttleDown;
+			} else {
+				deltaP=throttleDown;
+			}
+			if(rightOrTurn>0) {
+				deltaT=-throttleDown;
+			} else {
+				deltaT=throttleDown;
+			}
+			leftOrPower += deltaP;
+			rightOrTurn += deltaT;
+		}
 	}
 
-	// private void checkCurrent() {
-	// 	if (pdp.getTotalCurrent() > 120) {
-	// 		capCurrentDraw();
-	// 	}
-	// }
-
-	// private void capCurrentDraw() {
-	// 	leftOrPower /= 2;
-	// 	rightOrTurn /= 2;
-	// }
+	private double getDriveCurrent() {
+		double current=pdp.getTotalCurrent();
+		//double current = 0;
+		//Left and right gearboxes
+		//current += pdp.getCurrent(PH) + pdp.getCurrent(PH) + pdp.getCurrent(PH);
+		//current += pdp.getCurrent(PH) + pdp.getCurrent(PH) + pdp.getCurrent(PH);
+		return current;
+	}
+  
+	/**
+	 * Change the increment at which the throttle will decrease.
+	 * 
+	 * @param increment
+	 *            Increment at which the robot will throttle down
+	 */
+	public void changeThrottleDown(double increment) {
+		throttleDown += increment;
+		if(throttleDown<0.0) {
+			throttleDown=0;
+		}
+	}
 
 	public void stop() {
 		mode = STOP;

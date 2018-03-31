@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Hand implements Runnable {
-	private final int STOWED_THRESH = 0;
-	private final int EXTENDED_THRESH = -180;
-	private final int SCORE_THRESH = -90; // Ideally, half way between
+	private final int STOWED_THRESH = -30;
+	private final int EXTENDED_THRESH = -310;
+	private final int SCORE_THRESH = -215; // Ideally, half way between
 	private final double DEADBAND = 0.05;
 	private final double REDUCED = 0.35;
 	private final double MAX = 0.85;
@@ -38,18 +38,20 @@ public class Hand implements Runnable {
 	public void run() {
 		while (!Thread.interrupted()) {
 			SmartDashboard.putNumber("Wrist Encoder", wristEncoder.getDistance());
+			SmartDashboard.putNumber("Wrist state", state);
 			switch (state) {
 			case DISABLED:
-				wrist.stopMotor();
+				wrist.set(0);
 
-				if (wristEncoder.getDistance() > -10)
-					wristEncoder.reset();
+				if (wristEncoder.getDistance() > -10) {
+					//wristEncoder.reset();
+				}
 				break;
 			case STOW:
 				setPosition(STOWED_THRESH);
 
 				if (wristEncoder.getDistance() > -10) {
-					state = 0;
+					state = DISABLED;
 				}
 				break;
 			case EXTEND:
@@ -60,7 +62,8 @@ public class Hand implements Runnable {
 				break;
 			}
 
-			Timer.delay(0.005);
+			//Timer.delay(0.005);
+			Timer.delay(0.1);
 		}
 	}
 
@@ -92,7 +95,7 @@ public class Hand implements Runnable {
 		}
 		speed = deadBand(speed);
 
-		wrist.set(speed);
+		wrist.set(-speed);
 	}
 
 	private double normalize(double value, double max) {

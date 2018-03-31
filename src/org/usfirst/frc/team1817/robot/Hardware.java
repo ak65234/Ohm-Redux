@@ -36,14 +36,16 @@ public class Hardware {
         frontShifter = new Servo(8);
         backShifter = new Servo(9);
 
-        leftEncoder = new Encoder(0, 1);
+        //leftEncoder = new Encoder(0, 1);
+        leftEncoder = new Encoder(2, 3);
         leftEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
         leftEncoder.setReverseDirection(true);
 
-        rightEncoder = new Encoder(2, 3);
+        rightEncoder = new Encoder(4, 5);
         rightEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
 
-        wristEncoder = new Encoder(4, 5);
+        //wristEncoder = new Encoder(4, 5);
+        wristEncoder = new Encoder(0, 1);
 
         pdp = new PowerDistributionPanel();
 
@@ -55,5 +57,10 @@ public class Hardware {
         leftEncoder.reset();
         rightEncoder.reset();
         gyro.reset();
+    }
+    
+    public void resetEncoders() {
+    	leftEncoder.reset();
+    	rightEncoder.reset();
     }
 }
