@@ -66,4 +66,16 @@ public class Hardware {
     	leftEncoder.reset();
     	rightEncoder.reset();
     }
+    
+    /**
+     * Returns if the encoders and gyro are at a rest
+     */
+    public boolean driveAtRest() {
+    	return leftEncoder.getRate()==0 && rightEncoder.getRate()==0 &&
+    			Math.abs(gyro.getRate())<0.01;
+    }
+    
+    public double getDistance() {
+    	return Math.max(leftEncoder.getDistance(), rightEncoder.getDistance());
+    }
 }

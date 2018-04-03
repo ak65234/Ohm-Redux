@@ -208,7 +208,6 @@ public class Auto implements Runnable {
 
 	//TODO Test and tune
 	private void middleSwitchAutoExp(double time) {
-		
 		lastAngle();
 		if (!hasError) {
 			if (time < 0.5) {
@@ -251,72 +250,23 @@ public class Auto implements Runnable {
 				gyroTurn(TURN_SPEED, selectAngle()/2);
 			} else {
 				drive.arcade(0.5, 0);
-				/*
-				hand.score();
-				if(time<14.5) {
-					fingers.setSpeed(1);
-				}
-				*/
+				//hand.score();
+				//if(time<14.5) 
+					//fingers.setSpeed(1);
 			}
 		} else {
-			timer.reset(); //Make sure that the robot starts in at the correct action if an error occurs at the beginning
+			timer.reset();
 		}
-		
-		
-		/*
-		lastAngle();
-		if (!hasError) {
-			if (time < 0.5) {
-				drive.arcade(0.5, 0);
-			} else if (time < 1.5) {
-				gyroTurn(TURN_SPEED, selectAngle());
-			} else if (time < 3.5) {
-				if (!goodEnough(HYPOTONUSE-20))
-					gyroDriveForward(DRIVE_SPEED + 1.0, HYPOTONUSE-20);
-				else
-					gyroDriveForward(DRIVE_SPEED/2, HYPOTONUSE-20);
-			} else if (time < 5) {
-				drive.arcade(0.5, 0);
-			} else if (time < 5.5) {
-				drive.stop();
-				hand.score();
-			} else if (time < 6.5) {
-				fingers.setSpeed(1.0);
-			} else if (time < 6.75) {
-				fingers.setSpeed(0.0);
-				drive.arcade(-0.5, 0);
-			} else if (time < 7.75) {
-				gyroTurn(TURN_SPEED, selectAngle() * -2);
-			} else if (time < 8.75) {
-				hand.extend();
-				fingers.setSpeed(-1.0);
-				if (!goodEnough(SWITCH_LENGTH / 4))
-					gyroDriveForward(DRIVE_SPEED, SWITCH_LENGTH / 3);
-				else
-					gyroDriveForward(DRIVE_SPEED/2, SWITCH_LENGTH/3);
-			} else if (time < 10.75) {
-				fingers.setSpeed(0.0);
-				hand.stow();
-				if (!goodEnough(SWITCH_LENGTH / 4))
-					gyroDriveForward(-DRIVE_SPEED, SWITCH_LENGTH / 3);
-				else
-					gyroDriveForward(-DRIVE_SPEED/2, SWITCH_LENGTH/3);
-			} else if (time < 11.25) {
-				gyroTurn(TURN_SPEED, selectAngle() * 2);
-			} else if(time<11.75){
-				hand.score();
-				drive.arcade(0.5, 0);
-			} else {
-				fingers.setSpeed(1.0);
-			}
-			
-		} else {
-			timer.reset(); //Make sure that the robot starts in at the correct action if an error occurs at the beginning
-		}
-		*/
 	}
 
 	private void sameSideSwitchAuto(double time) {
+		
+		/*
+		while(!goodEnough(DISTANCE_TO_SWITCH_MID) && time<4.5) {
+			gyroDriveForward(DRIVE_SPEED, DISTANCE_TO_SWITCH_MID);
+		}
+		timer.reset();
+		*/
 		lastAngle();
 		if (time < 4.5) {
 			if (!goodEnough(DISTANCE_TO_SWITCH_MID))
@@ -396,8 +346,7 @@ public class Auto implements Runnable {
 	}
 
 	private boolean goodEnough(double target) {
-		return Math.abs(target - hw.leftEncoder.getDistance()) <= 4
-				|| Math.abs(target - hw.rightEncoder.getDistance()) <= 4;
+		return Math.abs(hw.getDistance())<=4 && hw.driveAtRest();
 	}
 
 	private void lastAngle() {
@@ -413,8 +362,7 @@ public class Auto implements Runnable {
 	private void gyroDriveForward(double speed, double distance) {
 
 		double angle = -hw.gyro.getAngle() + lastAngle;
-		double dist = Math.max(hw.leftEncoder.getDistance(), hw.rightEncoder.getDistance());
-
+		double dist = hw.getDistance();
 		//if (distance > 0 && dist < distance)
 		if (goodEnough(distance)) {
 			drive.arcade(0, 0);
