@@ -92,9 +92,7 @@ public class Auto implements Runnable {
 		shift.setInHighGear(false);
 		while (!Thread.interrupted()) {
 			SmartDashboard.putNumber("AUTO STATE", state);
-			SmartDashboard.putNumber("Left encoder", hw.leftEncoder.getDistance());
-			SmartDashboard.putNumber("Right encoder", hw.rightEncoder.getDistance());
-			SmartDashboard.putNumber("Gyro", hw.gyro.getAngle());
+			
 			SmartDashboard.putNumber("Last angle", lastAngle);
 			SmartDashboard.putBoolean("Turn done", turnDone);
 

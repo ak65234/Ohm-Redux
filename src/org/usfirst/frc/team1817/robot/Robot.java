@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		auto.stop();
 
-		shiftToggle.set(false);
+		//shiftToggle.set(false);
 		throttleToggleUp.set(false);
 		hand.stow();
 
@@ -66,9 +66,9 @@ public class Robot extends TimedRobot {
 		boolean dRB = ctrls.driver.getBumper(GenericHID.Hand.kRight); //Right bumper
 		boolean dUp = ctrls.driver.getPOV() == 0; //DPad up
 		boolean dDown = ctrls.driver.getPOV() == 180; //DPad down
-		boolean mA = ctrls.driver.getAButton(); //A button
-		boolean mX = ctrls.driver.getXButton(); //X button
-		boolean mY = ctrls.driver.getYButton(); //Y button
+		boolean dA = ctrls.driver.getAButton(); //A button
+		boolean dX = ctrls.driver.getXButton(); //X button
+		boolean dY = ctrls.driver.getYButton(); //Y button
 
 		double mLT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kLeft); //Left trigger
 		double mRT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kRight); //Right trigger
@@ -91,11 +91,11 @@ public class Robot extends TimedRobot {
 		}
 			
 
-		if (mA) {
+		if (dA) {
 			hand.extend();
-		} else if (mX) {
+		} else if (dX) {
 			hand.score();
-		} else if (mY) {
+		} else if (dY) {
 			hand.stow();
 		} else {
 			hand.manualMove(mLT - mRT);
@@ -115,7 +115,7 @@ public class Robot extends TimedRobot {
 
 	public void enableThreads() {
 		drive.enable();
-		shift.enable();
+		//shift.enable();
 		fingers.enable();
 	}
 
