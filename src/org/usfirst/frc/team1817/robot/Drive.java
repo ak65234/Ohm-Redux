@@ -62,7 +62,6 @@ public class Drive implements Runnable {
 			chassis.tankDrive(deadband(leftOrPower), deadband(rightOrTurn));
 			break;
 		case ARCADE:
-			SmartDashboard.putNumber("Amperage draw", getDriveCurrent());
 			SmartDashboard.putNumber("Throttle down", throttleDown);
 			SmartDashboard.putNumber("Forward", leftOrPower);
 			SmartDashboard.putNumber("Turn", rightOrTurn);
