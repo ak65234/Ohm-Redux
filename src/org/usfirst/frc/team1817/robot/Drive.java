@@ -127,7 +127,7 @@ public class Drive implements Runnable {
 		//current += pdp.getCurrent(PH) + pdp.getCurrent(PH) + pdp.getCurrent(PH);
 		return current;
 	}
-  
+
 	/**
 	 * Change the increment at which the throttle will decrease.
 	 * 
