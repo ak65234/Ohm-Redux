@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Hardware {
-    private final double DISTANCE_PER_PULSE = Math.PI * 6.0 / 250.0;
+    //private final double DISTANCE_PER_PULSE = Math.PI * 6.0 / 250.0;
+	private final double DISTANCE_PER_PULSE = Math.PI * 6.0 / 60;
 
     public final DifferentialDrive chassis;
     public final Encoder leftEncoder, rightEncoder, wristEncoder;

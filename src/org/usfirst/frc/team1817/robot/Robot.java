@@ -33,13 +33,16 @@ public class Robot extends TimedRobot {
 		throttleToggleDown = new Toggle();
 
 		auto = new Auto(hw, drive, shift, hand, fingers);
+		
+		new Sensor_Watcher(hw);
 	}
 
 	@Override
 	public void autonomousInit() {
 		hw.resetSensors();
 		enableThreads();
-
+		
+		drive.setAuto();
 		auto.start();
 	}
 
@@ -47,6 +50,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		auto.stop();
 
+		drive.setTeleop();
 		//shiftToggle.set(false);
 		throttleToggleUp.set(false);
 		hand.stow();
