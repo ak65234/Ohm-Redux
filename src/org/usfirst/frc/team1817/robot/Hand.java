@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Hand implements Runnable {
-	private final int STOWED_THRESH = -30;
-	private final int EXTENDED_THRESH = -310;
-	private final int SCORE_THRESH = -215; // Ideally, half way between
+	private final int STOWED_THRESH = 30;
+	private final int EXTENDED_THRESH = 310;
+	private final int SCORE_THRESH = 215;
 	private final double DEADBAND = 0.05;
 	private final double REDUCED = 0.35;
 	private final double MAX = 0.85;
@@ -43,14 +43,14 @@ public class Hand implements Runnable {
 			case DISABLED:
 				wrist.set(0);
 
-				if (wristEncoder.getDistance() > -10) {
+				if (wristEncoder.getDistance() < 10) {
 					//wristEncoder.reset();
 				}
 				break;
 			case STOW:
 				setPosition(STOWED_THRESH);
 
-				if (wristEncoder.getDistance() > -10) {
+				if (wristEncoder.getDistance() < 10) {
 					state = DISABLED;
 				}
 				break;
@@ -89,8 +89,8 @@ public class Hand implements Runnable {
 
 		speed /= RATE;
 		boolean againstGravity = state == SCORE // SCORING always fights gravity
-				|| state == EXTEND && currentPos > SCORE_THRESH // Moving to EXTEND from STOW
-				|| state == STOW && currentPos < SCORE_THRESH / 2.0; // Moving to STOW while EXTENDED
+				|| state == EXTEND && currentPos < SCORE_THRESH // Moving to EXTEND from STOW
+				|| state == STOW && currentPos > SCORE_THRESH / 2.0; // Moving to STOW while EXTENDED
 
 		if (againstGravity) {
 			speed = normalize(speed, MAX);

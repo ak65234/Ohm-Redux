@@ -47,6 +47,7 @@ public class Hardware {
 
         //wristEncoder = new Encoder(4, 5);
         wristEncoder = new Encoder(0, 1);
+        wristEncoder.setReverseDirection(true);
 
         pdp = new PowerDistributionPanel();
 
