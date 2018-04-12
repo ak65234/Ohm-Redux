@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1817.robot;
 
+import javax.annotation.Generated;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -83,7 +85,13 @@ public class AutoTestClass {
 		new Thread(() -> {
 			switch (AUTO.getSelected()) {
 			case TIMED_CROSS:
-				timedCross();
+				if (switchLocation() == station.charAt(0)) {
+					sameSideSwitchAuto();
+					defendCloseCube();
+				} else {
+					oppositeSideSwitchAuto();
+				}
+				//timedCross();
 				break;
 			case SWITCH_AUTO:
 				while (switchLocation() == 'E' && getTime() < 5.0) {
@@ -270,6 +278,53 @@ public class AutoTestClass {
 			fingers.setSpeed(1);
 		}
 	}
+	
+	private void defendCloseCube() {
+		double angle;
+		double dist;
+		reset();
+		while(getTime()<0.5) {
+			drive.arcade(-0.5, 0);
+		}
+		reset();
+		angle=-selectAngle();
+		while(getTime()<1.5 && !goodEnoughTurn(angle)) {
+			gyroTurn(TURN_SPEED, angle);
+		}
+		reset();
+		dist=40+ROBOT_LENGTH;
+		while(getTime()<1.5 && !goodEnoughDrive(dist)) {
+			gyroDriveForward(DRIVE_SPEED, dist);
+		}
+		reset();
+		angle*=-1;
+		if(angle<0) {
+			angle-=25;
+		} else {
+			angle+=25;
+		}
+		while(getTime()<2 && !goodEnoughTurn(angle)) {
+			gyroTurn(TURN_SPEED, angle);
+		}
+		reset();
+		hand.extend();
+		fingers.setSpeed(-2);
+		while(getTime()<1.0) {
+			drive.arcade(0.5, 0);
+		}
+		fingers.setSpeed(0);
+		hand.stow();
+		drive.stop();
+		/*
+		Timer.delay(0.2); //Give hand time to stow self
+		angle=selectAngle()/2;
+		reset();
+		while(getTime()<1 && !goodEnoughTurn(angle)) {
+			gyroTurn(TURN_SPEED, angle);
+		}
+		*/
+		
+	}
 
 	private char switchLocation() {
 		String locations = DriverStation.getInstance().getGameSpecificMessage();
@@ -337,11 +392,11 @@ public class AutoTestClass {
 		double dist = hw.getDistance();
 		//double power = (dist - distance)/50;
 		double power = (distance - dist) / 25;
-		if(power>speed) {
-			power=speed;
+		if (power > speed) {
+			power = speed;
 		}
-		if(power<-speed) {
-			power=-speed;
+		if (power < -speed) {
+			power = -speed;
 		}
 		drive.arcade(power, normalize(angle / 100.0, speed));
 	}
