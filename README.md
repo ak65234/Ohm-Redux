@@ -8,12 +8,12 @@ Controls
   * RIGHT TRIGGER - Fingers Out
   * LEFT BUMPER   -
   * RIGHT BUMPER  - Toggle Shift
-  * A             -
+  * A             - Hand Out
   * B             -
-  * X             -
-  * Y             -
-  * DPAD UP       -
-  * DPAD DOWN     -
+  * X             - Hand Score
+  * Y             - Hand In
+  * DPAD UP       - Throttle Down Increase
+  * DPAD DOWN     - Throttle Down Decrease
   * DPAD LEFT     -
   * DPAD RIGHT    -
 * Manipulator
@@ -25,10 +25,10 @@ Controls
   * RIGHT TRIGGER - Hand Out (Manual)
   * LEFT BUMPER   -
   * RIGHT BUMPER  -
-  * A             - Hand Out
+  * A             - 
   * B             -
-  * X             - Hand Score
-  * Y             - Hand In
+  * X             - 
+  * Y             - 
   * DPAD UP       -
   * DPAD DOWN     -
   * DPAD LEFT     -
