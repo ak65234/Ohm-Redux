@@ -82,13 +82,13 @@ public class Drive implements Runnable {
 	public void enable() {
 		state = ENABLED;
 	}
-	
+
 	public void setAuto() {
-		ramp=0.025;
+		ramp = 0.025;
 	}
-	
+
 	public void setTeleop() {
-		ramp=0.1;
+		ramp = 0.1;
 	}
 
 	public void tank(double left, double right) {
@@ -103,23 +103,23 @@ public class Drive implements Runnable {
 
 	public void arcade(double power, double turn) {
 		mode = ARCADE;
-		if (getDriveCurrent() < 120 || throttleDown<0.0009) {
+		if (getDriveCurrent() < 120 || throttleDown < 0.0009) {
 			double deltaP = Math.max(Math.min(power - leftOrPower, ramp), -ramp);
 			double deltaT = Math.max(Math.min(turn - rightOrTurn, ramp), -ramp);
 
 			leftOrPower += deltaP;
 			rightOrTurn += deltaT;
 		} else { //Throttle down the gearbox to conserve power
-			double deltaP,deltaT;
-			if(leftOrPower>0) {
-				deltaP=-throttleDown;
+			double deltaP, deltaT;
+			if (leftOrPower > 0) {
+				deltaP = -throttleDown;
 			} else {
-				deltaP=throttleDown;
+				deltaP = throttleDown;
 			}
-			if(rightOrTurn>0) {
-				deltaT=-throttleDown;
+			if (rightOrTurn > 0) {
+				deltaT = -throttleDown;
 			} else {
-				deltaT=throttleDown;
+				deltaT = throttleDown;
 			}
 			leftOrPower += deltaP;
 			rightOrTurn += deltaT;
@@ -127,7 +127,7 @@ public class Drive implements Runnable {
 	}
 
 	private double getDriveCurrent() {
-		double current=pdp.getTotalCurrent();
+		double current = pdp.getTotalCurrent();
 		//double current = 0;
 		//Left and right gearboxes
 		//current += pdp.getCurrent(PH) + pdp.getCurrent(PH) + pdp.getCurrent(PH);
@@ -143,8 +143,8 @@ public class Drive implements Runnable {
 	 */
 	public void changeThrottleDown(double increment) {
 		throttleDown += increment;
-		if(throttleDown<0.0) {
-			throttleDown=0;
+		if (throttleDown < 0.0) {
+			throttleDown = 0;
 		}
 	}
 

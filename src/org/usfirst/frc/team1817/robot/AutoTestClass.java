@@ -278,38 +278,38 @@ public class AutoTestClass {
 			fingers.setSpeed(1);
 		}
 	}
-	
+
 	private void defendCloseCube() {
 		double angle;
 		double dist;
 		reset();
-		while(getTime()<0.5) {
+		while (getTime() < 0.5) {
 			drive.arcade(-0.5, 0);
 		}
 		reset();
-		angle=-selectAngle();
-		while(getTime()<1.5 && !goodEnoughTurn(angle)) {
+		angle = -selectAngle();
+		while (getTime() < 1.5 && !goodEnoughTurn(angle)) {
 			gyroTurn(TURN_SPEED, angle);
 		}
 		reset();
-		dist=40+ROBOT_LENGTH;
-		while(getTime()<1.5 && !goodEnoughDrive(dist)) {
+		dist = 40 + ROBOT_LENGTH;
+		while (getTime() < 1.5 && !goodEnoughDrive(dist)) {
 			gyroDriveForward(DRIVE_SPEED, dist);
 		}
 		reset();
-		angle*=-1;
-		if(angle<0) {
-			angle-=25;
+		angle *= -1;
+		if (angle < 0) {
+			angle -= 25;
 		} else {
-			angle+=25;
+			angle += 25;
 		}
-		while(getTime()<2 && !goodEnoughTurn(angle)) {
+		while (getTime() < 2 && !goodEnoughTurn(angle)) {
 			gyroTurn(TURN_SPEED, angle);
 		}
 		reset();
 		hand.extend();
 		fingers.setSpeed(-2);
-		while(getTime()<1.0) {
+		while (getTime() < 1.0) {
 			drive.arcade(0.5, 0);
 		}
 		fingers.setSpeed(0);
@@ -323,7 +323,7 @@ public class AutoTestClass {
 			gyroTurn(TURN_SPEED, angle);
 		}
 		*/
-		
+
 	}
 
 	private char switchLocation() {

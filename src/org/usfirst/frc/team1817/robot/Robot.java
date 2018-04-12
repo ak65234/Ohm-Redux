@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
 		throttleToggleDown = new Toggle();
 
 		auto = new Auto(hw, drive, shift, hand, fingers);
-		
+
 		new Sensor_Watcher(hw);
 	}
 
@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		hw.resetSensors();
 		enableThreads();
-		
+
 		drive.setAuto();
 		auto.start();
 	}
@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
 		hand.stow();
 
 		enableThreads();
-		
+
 		fingers.setSpeed(0);
 
 	}
@@ -84,16 +84,15 @@ public class Robot extends TimedRobot {
 
 		//TODO Make sure this is doing what is expected
 		throttleToggleUp.update(dUp);
-		if(throttleToggleUp.get()) {
+		if (throttleToggleUp.get()) {
 			drive.changeThrottleDown(0.01);
 			throttleToggleUp.set(false);
 		}
 		throttleToggleDown.update(dDown);
-		if(throttleToggleDown.get()) {
+		if (throttleToggleDown.get()) {
 			drive.changeThrottleDown(-0.01);
 			throttleToggleDown.set(false);
 		}
-			
 
 		if (dA) {
 			hand.extend();
@@ -106,7 +105,7 @@ public class Robot extends TimedRobot {
 		}
 
 		fingers.setSpeed(dRT - dLT);
-		
+
 		SmartDashboard.putNumber("Left encoder", hw.leftEncoder.getDistance());
 		SmartDashboard.putNumber("Right Encoder", hw.rightEncoder.getDistance());
 		SmartDashboard.putNumber("Gyro", hw.gyro.getAngle());

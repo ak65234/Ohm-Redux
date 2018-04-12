@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Hardware {
     //private final double DISTANCE_PER_PULSE = Math.PI * 6.0 / 250.0;
-	private final double DISTANCE_PER_PULSE = Math.PI * 6.0 / 60;
+    private final double DISTANCE_PER_PULSE = Math.PI * 6.0 / 60;
 
     public final DifferentialDrive chassis;
     public final Encoder leftEncoder, rightEncoder, wristEncoder;
@@ -57,26 +57,25 @@ public class Hardware {
 
     }
 
-    public void resetSensors(){
+    public void resetSensors() {
         leftEncoder.reset();
         rightEncoder.reset();
         gyro.reset();
     }
-    
+
     public void resetEncoders() {
-    	leftEncoder.reset();
-    	rightEncoder.reset();
+        leftEncoder.reset();
+        rightEncoder.reset();
     }
-    
+
     /**
      * Returns if the encoders and gyro are at a rest
      */
     public boolean driveAtRest() {
-    	return leftEncoder.getRate()==0 && rightEncoder.getRate()==0 &&
-    			Math.abs(gyro.getRate())<0.01;
+        return leftEncoder.getRate() == 0 && rightEncoder.getRate() == 0 && Math.abs(gyro.getRate()) < 0.01;
     }
-    
+
     public double getDistance() {
-    	return Math.max(leftEncoder.getDistance(), rightEncoder.getDistance());
+        return Math.max(leftEncoder.getDistance(), rightEncoder.getDistance());
     }
 }

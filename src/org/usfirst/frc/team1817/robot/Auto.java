@@ -12,7 +12,7 @@ public class Auto implements Runnable {
 	private final String TIMED_CROSS = "Timed Cross Line";
 	private final String SWITCH_AUTO = "Switch";
 	private final String WIP_CENTER = "WIP Center auto (2 cube)";
-	
+
 	private final SendableChooser<String> WHICH_AUTO = new SendableChooser<>();
 	private final String TESTED = "Tested (Worked at El Paso)";
 	private final String WIP = "Work in progress";
@@ -59,7 +59,7 @@ public class Auto implements Runnable {
 
 	private double lastAngle = 0.0;
 	private boolean turnDone = false;
-	
+
 	private boolean firstDone = false;
 
 	public Auto(Hardware hw, Drive drive, Shift shift, Hand hand, Fingers fingers) {
@@ -78,11 +78,11 @@ public class Auto implements Runnable {
 		STATION.addObject(LEFT_STATION, LEFT_STATION);
 
 		SmartDashboard.putData("Station", STATION);
-		
+
 		WHICH_AUTO.addDefault(TESTED, TESTED);
 		WHICH_AUTO.addObject(WIP, WIP);
-		
-		SmartDashboard.putData("Which type?",WHICH_AUTO);
+
+		SmartDashboard.putData("Which type?", WHICH_AUTO);
 
 		this.hw = hw;
 		this.drive = drive;
@@ -141,28 +141,28 @@ public class Auto implements Runnable {
 		double time = timer.get();
 		String station = STATION.getSelected();
 		AutoTestClass test = new AutoTestClass(hw, drive, shift, hand, fingers, AUTO, STATION);
-		if(WHICH_AUTO.getSelected()==TESTED) {
-		switch (AUTO.getSelected()) {
-		case TIMED_CROSS:
-			timedCross(time);
-			break;
-		case SWITCH_AUTO:
-			if (switchLocation() == 'E') {
-				toSwitchMid();
-				if (timer.get() > 5)
-					timer.reset();
-			} else if (switchLocation() == station.charAt(0)) {
-				sameSideSwitchAuto(time);
-			} else if (station == MIDDLE_STATION) {
-				middleSwitchAuto(time);
-			} else {
-				oppositeSideSwitchAuto(time);
+		if (WHICH_AUTO.getSelected() == TESTED) {
+			switch (AUTO.getSelected()) {
+			case TIMED_CROSS:
+				timedCross(time);
+				break;
+			case SWITCH_AUTO:
+				if (switchLocation() == 'E') {
+					toSwitchMid();
+					if (timer.get() > 5)
+						timer.reset();
+				} else if (switchLocation() == station.charAt(0)) {
+					sameSideSwitchAuto(time);
+				} else if (station == MIDDLE_STATION) {
+					middleSwitchAuto(time);
+				} else {
+					oppositeSideSwitchAuto(time);
+				}
+				break;
+			case WIP_CENTER:
+				middleSwitchAutoExp(time);
+				break;
 			}
-			break;
-		case WIP_CENTER:
-			middleSwitchAutoExp(time);
-			break;
-		}
 		} else { //WORK IN PROGRESS AUTONS
 			stop();
 			test.start();
@@ -188,7 +188,7 @@ public class Auto implements Runnable {
 	private void toSwitchMid() {
 		gyroDriveForward(DRIVE_SPEED, DISTANCE_TO_SWITCH_MID);
 	}
-	
+
 	//TODO Tune
 	private void middleSwitchAuto(double time) {
 		lastAngle();
@@ -202,9 +202,9 @@ public class Auto implements Runnable {
 				if (!goodEnough(HYPOTONUSE))
 					gyroDriveForward(DRIVE_SPEED, HYPOTONUSE);
 				else
-					gyroDriveForward(DRIVE_SPEED/2,  HYPOTONUSE);
+					gyroDriveForward(DRIVE_SPEED / 2, HYPOTONUSE);
 			} else if (time < 6.0) {
-				gyroTurn(TURN_SPEED, -selectAngle()/3.0);
+				gyroTurn(TURN_SPEED, -selectAngle() / 3.0);
 			} else if (time < 7.0) {
 				drive.arcade(0.6, 0);
 			} else if (time < 8) {
@@ -231,40 +231,40 @@ public class Auto implements Runnable {
 				if (!goodEnough(HYPOTONUSE))
 					gyroDriveForward(DRIVE_SPEED, HYPOTONUSE);
 				else
-					gyroDriveForward(DRIVE_SPEED/2,  HYPOTONUSE);
+					gyroDriveForward(DRIVE_SPEED / 2, HYPOTONUSE);
 			} else if (time < 6.0) {
-				gyroTurn(TURN_SPEED, -selectAngle()/3.0);
+				gyroTurn(TURN_SPEED, -selectAngle() / 3.0);
 			} else if (time < 7.0) {
 				drive.arcade(0.6, 0);
 			} else if (time < 8) {
 				drive.stop();
 				hand.score();
-			} else if(time<8.25){ //END ONE CUBE
+			} else if (time < 8.25) { //END ONE CUBE
 				fingers.setSpeed(1.0);
-			} else if(time<8.75) {
+			} else if (time < 8.75) {
 				fingers.setSpeed(0);
 				drive.arcade(-0.5, 0);
-			} else if(time<10) {
-				gyroTurn(TURN_SPEED, -selectAngle()*2);
-			} else if(time<11) {
+			} else if (time < 10) {
+				gyroTurn(TURN_SPEED, -selectAngle() * 2);
+			} else if (time < 11) {
 				hand.extend();
 				fingers.setSpeed(-1);
-				gyroDriveForward(DRIVE_SPEED, SWITCH_LENGTH/1.5);
-			} else if(time<12.5) {
-				if(!firstDone) {
+				gyroDriveForward(DRIVE_SPEED, SWITCH_LENGTH / 1.5);
+			} else if (time < 12.5) {
+				if (!firstDone) {
 					hw.resetEncoders();
-					firstDone=true;
+					firstDone = true;
 				}
 				hand.stow();
 				fingers.setSpeed(0);
-				gyroDriveForward(-DRIVE_SPEED, SWITCH_LENGTH/1.5);
-			} else if(time<14) {
-				gyroTurn(TURN_SPEED, selectAngle()/2);
+				gyroDriveForward(-DRIVE_SPEED, SWITCH_LENGTH / 1.5);
+			} else if (time < 14) {
+				gyroTurn(TURN_SPEED, selectAngle() / 2);
 			} else {
 				drive.arcade(0.5, 0);
 				//hand.score();
 				//if(time<14.5) 
-					//fingers.setSpeed(1);
+				//fingers.setSpeed(1);
 			}
 		} else {
 			timer.reset();
@@ -272,7 +272,7 @@ public class Auto implements Runnable {
 	}
 
 	private void sameSideSwitchAuto(double time) {
-		
+
 		/*
 		while(!goodEnough(DISTANCE_TO_SWITCH_MID) && time<4.5) {
 			gyroDriveForward(DRIVE_SPEED, DISTANCE_TO_SWITCH_MID);
@@ -284,7 +284,7 @@ public class Auto implements Runnable {
 			if (!goodEnough(DISTANCE_TO_SWITCH_MID))
 				gyroDriveForward(DRIVE_SPEED, DISTANCE_TO_SWITCH_MID);
 			else
-				gyroDriveForward(DRIVE_SPEED/2, DISTANCE_TO_SWITCH_MID);
+				gyroDriveForward(DRIVE_SPEED / 2, DISTANCE_TO_SWITCH_MID);
 		} else if (time < 7.0 && !hasError) {
 			gyroTurn(TURN_SPEED, selectAngle());
 		} else if (time < 8.0 && !hasError) {
@@ -305,7 +305,7 @@ public class Auto implements Runnable {
 			if (!goodEnough(DISTANCE_TO_SWITCH_BACK + ROBOT_LENGTH / 2))
 				gyroDriveForward(DRIVE_SPEED, DISTANCE_TO_SWITCH_BACK + ROBOT_LENGTH / 2);
 			else
-				gyroDriveForward(DRIVE_SPEED/2, DISTANCE_TO_SWITCH_BACK + ROBOT_LENGTH / 2);
+				gyroDriveForward(DRIVE_SPEED / 2, DISTANCE_TO_SWITCH_BACK + ROBOT_LENGTH / 2);
 		} else if (time < 6.5) {
 			gyroTurn(TURN_SPEED, selectAngle());
 		} else if (time < 9.5 && !hasError) {
@@ -313,10 +313,10 @@ public class Auto implements Runnable {
 			if (!goodEnough(SWITCH_LENGTH))
 				gyroDriveForward(DRIVE_SPEED + 0.15, SWITCH_LENGTH);
 			else
-				gyroDriveForward(DRIVE_SPEED/2, SWITCH_LENGTH);
+				gyroDriveForward(DRIVE_SPEED / 2, SWITCH_LENGTH);
 		} else if (time < 11.5 && !hasError) {
 			turnDone = false;
-			gyroTurn(TURN_SPEED, (selectAngle()*0.85)+lastAngle);
+			gyroTurn(TURN_SPEED, (selectAngle() * 0.85) + lastAngle);
 		} else if (time < 12.5 && !hasError) {
 			drive.arcade(0.5, 0);
 			hand.score();
@@ -358,7 +358,7 @@ public class Auto implements Runnable {
 	}
 
 	private boolean goodEnough(double target) {
-		return Math.abs(hw.getDistance())<=4 && hw.driveAtRest();
+		return Math.abs(hw.getDistance()) <= 4 && hw.driveAtRest();
 	}
 
 	private void lastAngle() {
@@ -381,10 +381,10 @@ public class Auto implements Runnable {
 		} else if (dist < distance) {
 			drive.arcade(speed, normalize(angle / 100.0, speed));
 		} else if (dist > distance) {
-		//else if (distance <= 0 && dist > distance)
-		drive.arcade(-speed, normalize(angle / 100.0, speed));
+			//else if (distance <= 0 && dist > distance)
+			drive.arcade(-speed, normalize(angle / 100.0, speed));
 		}
-		
+
 	}
 
 	private void gyroTurn(double speed, double targetAngle) {

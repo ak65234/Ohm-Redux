@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.XboxController;
 public class Controls {
     public final XboxController driver, manipulator;
 
-    public Controls(){
+    public Controls() {
         driver = new XboxController(0);
         manipulator = new XboxController(1);
     }
