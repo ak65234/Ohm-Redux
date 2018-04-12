@@ -22,9 +22,9 @@ public class Hardware {
 
     public Hardware() {
         VictorSP left = new VictorSP(0);
-        left.setInverted(true);
+        left.setInverted(false);
         VictorSP right = new VictorSP(1);
-        right.setInverted(true);
+        right.setInverted(false);
         chassis = new DifferentialDrive(left, right);
 
         VictorSP intake1 = new VictorSP(2);
