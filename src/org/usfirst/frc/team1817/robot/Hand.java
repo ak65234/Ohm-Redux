@@ -83,12 +83,16 @@ public class Hand implements Runnable {
 		state = SCORE;
 	}
 
-	private void setPosition(double value) {
-		double current = wristEncoder.getDistance();
-		double speed = value - current;
+	private void setPosition(double targetPos) {
+		double currentPos = wristEncoder.getDistance();
+		double speed = targetPos - currentPos;
 
 		speed /= RATE;
-		if (state == SCORE || state == STOW && current < SCORE_THRESH / 2.0 || state == EXTEND && current > SCORE_THRESH) {
+		boolean againstGravity = state == SCORE // SCORING always fights gravity
+				|| state == EXTEND && currentPos > SCORE_THRESH // Moving to EXTEND from STOW
+				|| state == STOW && currentPos < SCORE_THRESH / 2.0; // Moving to STOW while EXTENDED
+
+		if (againstGravity) {
 			speed = normalize(speed, MAX);
 		} else {
 			speed = normalize(speed, REDUCED);
