@@ -80,17 +80,14 @@ public class Robot extends TimedRobot {
 
 		drive.arcade(-dLY, dRX);
 
-		shiftToggle.update(dRB);
-		shift.setInHighGear(shiftToggle.get());
+		shift.setInHighGear(shiftToggle.update(dRB));
 
 		//TODO Make sure this is doing what is expected
-		throttleToggleUp.update(dUp);
-		if (throttleToggleUp.get()) {
+		if (throttleToggleUp.update(dUp)) {
 			drive.changeThrottleDown(0.01);
 			throttleToggleUp.set(false);
 		}
-		throttleToggleDown.update(dDown);
-		if (throttleToggleDown.get()) {
+		if (throttleToggleDown.update(dDown)) {
 			drive.changeThrottleDown(-0.01);
 			throttleToggleDown.set(false);
 		}
