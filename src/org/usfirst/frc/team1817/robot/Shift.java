@@ -10,7 +10,7 @@ public class Shift implements Runnable {
 
     private boolean lowGear;
     private final Servo front, back;
-    private final Thread t;
+    // private final Thread t;
 
     public Shift(Hardware hw) {
         state = DISABLED;
@@ -20,8 +20,8 @@ public class Shift implements Runnable {
         front = hw.frontShifter;
         back = hw.backShifter;
 
-        t = new Thread(this, "Shift");
-        t.start();
+        // t = new Thread(this, "Shift");
+        // t.start();
     }
 
     public void run() {

@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
 		throttleToggleDown = new Toggle();
 
 		auto = new Auto(hw, drive, shift, hand, fingers);
-		
+
 		new Sensor_Watcher(hw);
 	}
 
@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		hw.resetSensors();
 		enableThreads();
-		
+
 		drive.setAuto();
 		auto.start();
 	}
@@ -51,12 +51,13 @@ public class Robot extends TimedRobot {
 		auto.stop();
 
 		drive.setTeleop();
-		//shiftToggle.set(false);
+		shiftToggle.set(false);
 		throttleToggleUp.set(false);
+		throttleToggleDown.set(false);
 		hand.stow();
 
 		enableThreads();
-		
+
 		fingers.setSpeed(0);
 
 	}
@@ -68,8 +69,8 @@ public class Robot extends TimedRobot {
 		double dLT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kLeft); //Left trigger
 		double dRT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kRight); //Right trigger
 		boolean dRB = ctrls.driver.getBumper(GenericHID.Hand.kRight); //Right bumper
-		boolean dUp = ctrls.driver.getPOV() == 0; //DPad up
-		boolean dDown = ctrls.driver.getPOV() == 180; //DPad down
+		boolean dUp = ctrls.driver.getPOV() == Controls.POV.UP; //DPad up
+		boolean dDown = ctrls.driver.getPOV() == Controls.POV.DOWN; //DPad down
 		boolean dA = ctrls.driver.getAButton(); //A button
 		boolean dX = ctrls.driver.getXButton(); //X button
 		boolean dY = ctrls.driver.getYButton(); //Y button
@@ -79,21 +80,17 @@ public class Robot extends TimedRobot {
 
 		drive.arcade(-dLY, dRX);
 
-		shiftToggle.update(dRB);
-		shift.setInHighGear(shiftToggle.get());
+		shift.setInHighGear(shiftToggle.update(dRB));
 
 		//TODO Make sure this is doing what is expected
-		throttleToggleUp.update(dUp);
-		if(throttleToggleUp.get()) {
+		if (throttleToggleUp.update(dUp)) {
 			drive.changeThrottleDown(0.01);
 			throttleToggleUp.set(false);
 		}
-		throttleToggleDown.update(dDown);
-		if(throttleToggleDown.get()) {
+		if (throttleToggleDown.update(dDown)) {
 			drive.changeThrottleDown(-0.01);
 			throttleToggleDown.set(false);
 		}
-			
 
 		if (dA) {
 			hand.extend();
@@ -106,7 +103,10 @@ public class Robot extends TimedRobot {
 		}
 
 		fingers.setSpeed(dRT - dLT);
-		
+
+		SmartDashboard.putNumber("Left encoder", hw.leftEncoder.getDistance());
+		SmartDashboard.putNumber("Right Encoder", hw.rightEncoder.getDistance());
+		SmartDashboard.putNumber("Gyro", hw.gyro.getAngle());
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class Robot extends TimedRobot {
 
 	public void enableThreads() {
 		drive.enable();
-		//shift.enable();
+		shift.enable();
 		fingers.enable();
 	}
 
