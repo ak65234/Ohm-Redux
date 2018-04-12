@@ -53,6 +53,7 @@ public class Robot extends TimedRobot {
 		drive.setTeleop();
 		shiftToggle.set(false);
 		throttleToggleUp.set(false);
+		throttleToggleDown.set(false);
 		hand.stow();
 
 		enableThreads();
