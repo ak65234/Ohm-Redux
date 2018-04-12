@@ -65,7 +65,7 @@ public class Drive implements Runnable {
 			SmartDashboard.putNumber("Throttle down", throttleDown);
 			SmartDashboard.putNumber("Forward", leftOrPower);
 			SmartDashboard.putNumber("Turn", rightOrTurn);
-			chassis.arcadeDrive(deadband(-leftOrPower), deadband(rightOrTurn));
+			chassis.arcadeDrive(deadband(leftOrPower), deadband(rightOrTurn));
 			break;
 		case STOP:
 			chassis.stopMotor();
