@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
 		auto.stop();
 
 		drive.setTeleop();
-		//shiftToggle.set(false);
+		shiftToggle.set(false);
 		throttleToggleUp.set(false);
 		hand.stow();
 
@@ -119,7 +119,7 @@ public class Robot extends TimedRobot {
 
 	public void enableThreads() {
 		drive.enable();
-		//shift.enable();
+		shift.enable();
 		fingers.enable();
 	}
 
