@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drive implements Runnable {
 	private final double DEADZONE = 0.1;
 	private double ramp = 0.1;
+	private boolean inAuto = false;
 
 	private int state;
 	private final int DISABLED = 0;
@@ -65,7 +66,11 @@ public class Drive implements Runnable {
 			SmartDashboard.putNumber("Throttle down", throttleDown);
 			SmartDashboard.putNumber("Forward", leftOrPower);
 			SmartDashboard.putNumber("Turn", rightOrTurn);
-			chassis.arcadeDrive(deadband(leftOrPower), deadband(rightOrTurn));
+			if(!inAuto) {
+				chassis.arcadeDrive(deadband(leftOrPower), deadband(rightOrTurn));
+			} else {
+				chassis.arcadeDrive(leftOrPower, rightOrTurn);
+			}
 			break;
 		case STOP:
 			chassis.stopMotor();
@@ -84,10 +89,12 @@ public class Drive implements Runnable {
 	}
 
 	public void setAuto() {
-		ramp = 0.005; //Had strange acceleration at 0.025
+		inAuto = true;
+		ramp = 0.01; //Had strange acceleration at 0.025
 	}
 
 	public void setTeleop() {
+		inAuto = false;
 		ramp = 0.1;
 	}
 
@@ -120,6 +127,12 @@ public class Drive implements Runnable {
 				deltaT = -throttleDown;
 			} else {
 				deltaT = throttleDown;
+			}
+			if (inAuto && power == 0) {
+				leftOrPower = 0;
+			}
+			if (inAuto && turn == 0) {
+				rightOrTurn = 0;
 			}
 			leftOrPower += deltaP;
 			rightOrTurn += deltaT;
