@@ -1,11 +1,8 @@
 package org.usfirst.frc.team1817.robot;
 
-import javax.annotation.Generated;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoTestClass {
 	//Autonomous selectors
@@ -23,11 +20,13 @@ public class AutoTestClass {
 	//Field specific constants
 	private final int ROBOT_LENGTH = 38;
 	// private final int DISTANCE_TO_SWITCH_FRONT = 144 - ROBOT_LENGTH;
-	private final int DISTANCE_TO_SWITCH_MID = (170 - ROBOT_LENGTH / 2);
-	private final int DISTANCE_TO_SWITCH_BACK = 196;
+	//private final int DISTANCE_TO_SWITCH_MID = (170 - ROBOT_LENGTH / 2);
+	private final int DISTANCE_TO_SWITCH_MID = (170 - ROBOT_LENGTH / 3);
+	//private final int DISTANCE_TO_SWITCH_BACK = 196;
+	private final int DISTANCE_TO_SWITCH_BACK = 196 + ROBOT_LENGTH / 2;
 	private final int SWITCH_LENGTH = 154;
-	private final int LEFT_TURN = -90;
-	private final int RIGHT_TURN = 90;
+	private final int LEFT_TURN = -85;
+	private final int RIGHT_TURN = 85;
 	//private final int MID_RIGHT = 40;
 	private final int MID_RIGHT = 35;
 	//private final int MID_LEFT = -40;
@@ -38,7 +37,8 @@ public class AutoTestClass {
 	//Robot speeds
 	//private final double DRIVE_SPEED = 0.75;
 	private final double DRIVE_SPEED = 1.0;
-	private final double TURN_SPEED = 0.65;
+	//private final double TURN_SPEED = 0.65;
+	private final double TURN_SPEED = 0.75;
 
 	//Robot classes
 	private final DriverStation ds;
@@ -186,7 +186,7 @@ public class AutoTestClass {
 			gyroTurn(TURN_SPEED, angle);
 		}
 		reset();
-		dist = SWITCH_LENGTH - ROBOT_LENGTH;
+		dist = SWITCH_LENGTH / 2 - ROBOT_LENGTH;
 		while (getTime() < 2.0 && !goodEnoughDrive(dist)) { //Enter the cubes
 			gyroDriveForward(0.5, dist);
 			hand.extend();
@@ -195,9 +195,8 @@ public class AutoTestClass {
 		reset();
 		hand.stow();
 		fingers.setSpeed(0.0);
-		dist *= -1;
-		dist *= 0.9;
-		while (getTime() < 1.0 && !goodEnoughDrive(dist)) { //Back away
+		dist *= -0.9;
+		while (getTime() < 2.0 && !goodEnoughDrive(dist)) { //Back away
 			gyroDriveForward(0.5, dist);
 		}
 		reset();
@@ -211,6 +210,8 @@ public class AutoTestClass {
 		}
 		drive.stop();
 		fingers.setSpeed(1.0);
+
+		//boolean Corbo2000 Awww Yeah!!! = false;
 	}
 
 	private void sameSideSwitchAuto() {
@@ -295,14 +296,14 @@ public class AutoTestClass {
 		reset();
 		dist = 40 + ROBOT_LENGTH;
 		while (getTime() < 1.5 && !goodEnoughDrive(dist)) {
-			gyroDriveForward(DRIVE_SPEED, dist);
+			gyroDriveForward(0.75, dist);
 		}
 		reset();
 		angle *= -1;
 		if (angle < 0) {
-			angle -= 25;
+			angle -= 30;
 		} else {
-			angle += 25;
+			angle += 30;
 		}
 		while (getTime() < 2 && !goodEnoughTurn(angle)) {
 			gyroTurn(TURN_SPEED, angle);
@@ -310,8 +311,8 @@ public class AutoTestClass {
 		reset();
 		hand.extend();
 		fingers.setSpeed(-2);
-		while (getTime() < 1.0) {
-			drive.arcade(0.5, 0);
+		while (getTime() < 1.25) {
+			drive.arcade(0.6, 0);
 		}
 		fingers.setSpeed(0);
 		hand.stow();
@@ -424,7 +425,8 @@ public class AutoTestClass {
 	private void gyroTurn(double speed, double targetAngle) {
 		double currentAngle = hw.gyro.getAngle();
 
-		double turn = (targetAngle - currentAngle) / 10.0;
+		//double turn = (targetAngle - currentAngle) / 10.0;
+		double turn = (targetAngle - currentAngle) / 13;
 
 		drive.arcade(0, normalize(turn, speed));
 		hw.resetEncoders();
