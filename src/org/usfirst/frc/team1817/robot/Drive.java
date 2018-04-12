@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive implements Runnable {
 	private final double DEADZONE = 0.1;
-	private final double RAMP = 0.1;
+	private double ramp = 0.1;
 
 	private int state;
 	private final int DISABLED = 0;
@@ -65,7 +65,7 @@ public class Drive implements Runnable {
 			SmartDashboard.putNumber("Throttle down", throttleDown);
 			SmartDashboard.putNumber("Forward", leftOrPower);
 			SmartDashboard.putNumber("Turn", rightOrTurn);
-			chassis.arcadeDrive(deadband(-leftOrPower), deadband(-rightOrTurn));
+			chassis.arcadeDrive(deadband(-leftOrPower), deadband(rightOrTurn));
 			break;
 		case STOP:
 			chassis.stopMotor();
@@ -82,12 +82,20 @@ public class Drive implements Runnable {
 	public void enable() {
 		state = ENABLED;
 	}
+	
+	public void setAuto() {
+		ramp=0.025;
+	}
+	
+	public void setTeleop() {
+		ramp=0.1;
+	}
 
 	public void tank(double left, double right) {
 		mode = TANK;
 
-		double deltaL = Math.max(Math.min(left - leftOrPower, RAMP), -RAMP);
-		double deltaR = Math.max(Math.min(right - rightOrTurn, RAMP), -RAMP);
+		double deltaL = Math.max(Math.min(left - leftOrPower, ramp), -ramp);
+		double deltaR = Math.max(Math.min(right - rightOrTurn, ramp), -ramp);
 
 		leftOrPower += deltaL;
 		rightOrTurn += deltaR;
@@ -96,8 +104,8 @@ public class Drive implements Runnable {
 	public void arcade(double power, double turn) {
 		mode = ARCADE;
 		if (getDriveCurrent() < 120 || throttleDown<0.0009) {
-			double deltaP = Math.max(Math.min(power - leftOrPower, RAMP), -RAMP);
-			double deltaT = Math.max(Math.min(turn - rightOrTurn, RAMP), -RAMP);
+			double deltaP = Math.max(Math.min(power - leftOrPower, ramp), -ramp);
+			double deltaT = Math.max(Math.min(turn - rightOrTurn, ramp), -ramp);
 
 			leftOrPower += deltaP;
 			rightOrTurn += deltaT;
