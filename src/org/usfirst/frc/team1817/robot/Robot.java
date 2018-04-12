@@ -43,13 +43,10 @@ public class Robot extends TimedRobot {
 		enableThreads();
 
 		drive.setAuto();
-		auto.start();
 	}
 
 	@Override
 	public void teleopInit() {
-		auto.stop();
-
 		drive.setTeleop();
 		shiftToggle.set(false);
 		throttleToggleUp.set(false);

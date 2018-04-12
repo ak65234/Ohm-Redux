@@ -3,11 +3,10 @@ package org.usfirst.frc.team1817.robot;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Auto implements Runnable {
-
-	//Autonomous selectors
+public class Auto {
+	// Autonomous selectors
 	private final SendableChooser<String> AUTO = new SendableChooser<>();
 	private final String TIMED_CROSS = "Timed Cross Line";
 	private final String SWITCH_AUTO = "Switch";
@@ -17,16 +16,16 @@ public class Auto implements Runnable {
 	private final String TESTED = "Tested (Worked at El Paso)";
 	private final String WIP = "Work in progress";
 
-	//Alliance station selectors
+	// Alliance station selectors
 	private final SendableChooser<String> STATION = new SendableChooser<>();
 	private final String LEFT_STATION = "Left station";
 	private final String RIGHT_STATION = "Right station";
 	private final String MIDDLE_STATION = "Middle station";
 
-	//Field specific constants
+	// Field specific constants
 	private final int ROBOT_LENGTH = 38;
 	// private final int DISTANCE_TO_SWITCH_FRONT = 144 - ROBOT_LENGTH;
-	private final int DISTANCE_TO_SWITCH_MID = (170 - ROBOT_LENGTH / 2);
+	private final int DISTANCE_TO_SWITCH_MID = 170 - ROBOT_LENGTH / 2;
 	private final int DISTANCE_TO_SWITCH_BACK = 196;
 	private final int SWITCH_LENGTH = 154;
 	private final int LEFT_TURN = -90;
@@ -40,11 +39,6 @@ public class Auto implements Runnable {
 	private final double DRIVE_SPEED = 0.75;
 	private final double TURN_SPEED = 0.65;
 
-	//States
-	private int state;
-	private final int DISABLED = 0;
-	private final int ENABLED = 1;
-
 	//Robot classes
 	private final DriverStation ds;
 	private final Hardware hw;
@@ -53,7 +47,6 @@ public class Auto implements Runnable {
 	private final Hand hand;
 	private final Fingers fingers;
 	private final Timer timer;
-	private final Thread t;
 
 	private boolean hasError = false;
 
@@ -63,8 +56,6 @@ public class Auto implements Runnable {
 	private boolean firstDone = false;
 
 	public Auto(Hardware hw, Drive drive, Shift shift, Hand hand, Fingers fingers) {
-		state = DISABLED;
-
 		this.ds = DriverStation.getInstance();
 
 		AUTO.addDefault(TIMED_CROSS, TIMED_CROSS);
@@ -92,52 +83,12 @@ public class Auto implements Runnable {
 
 		timer = new Timer();
 		timer.start();
-
-		t = new Thread(this, "Auto");
-		t.start();
-	}
-
-	public void run() {
-		shift.setInHighGear(false);
-		while (!Thread.interrupted()) {
-			SmartDashboard.putNumber("AUTO STATE", state);
-			SmartDashboard.putNumber("Last angle", lastAngle);
-			SmartDashboard.putBoolean("Turn done", turnDone);
-
-			switch (state) {
-			case DISABLED:
-				break;
-			case ENABLED:
-				runAuto();
-				break;
-			}
-
-			if (!ds.isAutonomous()) {
-				stop();
-			}
-
-			Timer.delay(0.005);
-		}
-	}
-
-	public void start() {
-		state = ENABLED;
-
-		turnDone = false;
-		lastAngle = 0.0;
-
-		timer.reset();
-		timer.start();
-	}
-
-	public void stop() {
-		state = DISABLED;
-
-		timer.stop();
-		timer.reset();
 	}
 
 	public void runAuto() {
+		shift.setInHighGear(false);
+		SmartDashboard.putNumber("Last angle", lastAngle);
+		SmartDashboard.putBoolean("Turn done", turnDone);
 		double time = timer.get();
 		String station = STATION.getSelected();
 		AutoTestClass test = new AutoTestClass(hw, drive, shift, hand, fingers, AUTO, STATION);
@@ -164,7 +115,6 @@ public class Auto implements Runnable {
 				break;
 			}
 		} else { //WORK IN PROGRESS AUTONS
-			stop();
 			test.start();
 			test.runAuto();
 		}
