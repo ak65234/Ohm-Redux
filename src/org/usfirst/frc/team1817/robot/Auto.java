@@ -12,6 +12,10 @@ public class Auto implements Runnable {
 	private final String TIMED_CROSS = "Timed Cross Line";
 	private final String SWITCH_AUTO = "Switch";
 	private final String WIP_CENTER = "WIP Center auto (2 cube)";
+	
+	private final SendableChooser<String> WHICH_AUTO = new SendableChooser<>();
+	private final String TESTED = "Tested (Worked at El Paso)";
+	private final String WIP = "Work in progress";
 
 	//Alliance station selectors
 	private final SendableChooser<String> STATION = new SendableChooser<>();
@@ -74,6 +78,11 @@ public class Auto implements Runnable {
 		STATION.addObject(LEFT_STATION, LEFT_STATION);
 
 		SmartDashboard.putData("Station", STATION);
+		
+		WHICH_AUTO.addDefault(TESTED, TESTED);
+		WHICH_AUTO.addObject(WIP, WIP);
+		
+		SmartDashboard.putData("Which type?",WHICH_AUTO);
 
 		this.hw = hw;
 		this.drive = drive;
@@ -131,12 +140,13 @@ public class Auto implements Runnable {
 	public void runAuto() {
 		double time = timer.get();
 		String station = STATION.getSelected();
+		AutoTestClass test = new AutoTestClass(hw, drive, shift, hand, fingers, AUTO, STATION);
+		if(WHICH_AUTO.getSelected()==TESTED) {
 		switch (AUTO.getSelected()) {
 		case TIMED_CROSS:
 			timedCross(time);
 			break;
 		case SWITCH_AUTO:
-			//Refactored to call switchLocation() every iteration to allow for recovery of an error
 			if (switchLocation() == 'E') {
 				toSwitchMid();
 				if (timer.get() > 5)
@@ -152,6 +162,11 @@ public class Auto implements Runnable {
 		case WIP_CENTER:
 			middleSwitchAutoExp(time);
 			break;
+		}
+		} else { //WORK IN PROGRESS AUTONS
+			stop();
+			test.start();
+			test.runAuto();
 		}
 	}
 
