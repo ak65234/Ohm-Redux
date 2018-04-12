@@ -14,13 +14,15 @@ public class Toggle {
         flip = false;
     }
 
-    public void update(boolean value) {
+    public boolean update(boolean value) {
         if (value) {
             flip = true;
         } else if (flip) {
             flip = false;
             state = !state;
         }
+
+        return state;
     }
 
     public void set(boolean value) {
