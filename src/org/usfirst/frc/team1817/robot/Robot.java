@@ -82,7 +82,6 @@ public class Robot extends TimedRobot {
 
 		shift.setInHighGear(shiftToggle.update(dRB));
 
-		//TODO Make sure this is doing what is expected
 		if (throttleToggleUp.update(dUp)) {
 			drive.changeThrottleDown(0.01);
 			throttleToggleUp.set(false);
@@ -103,10 +102,6 @@ public class Robot extends TimedRobot {
 		}
 
 		fingers.setSpeed(dRT - dLT);
-
-		SmartDashboard.putNumber("Left encoder", hw.leftEncoder.getDistance());
-		SmartDashboard.putNumber("Right Encoder", hw.rightEncoder.getDistance());
-		SmartDashboard.putNumber("Gyro", hw.gyro.getAngle());
 	}
 
 	@Override

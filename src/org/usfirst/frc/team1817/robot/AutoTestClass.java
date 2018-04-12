@@ -20,24 +20,17 @@ public class AutoTestClass {
 	//Field specific constants
 	private final int ROBOT_LENGTH = 38;
 	// private final int DISTANCE_TO_SWITCH_FRONT = 144 - ROBOT_LENGTH;
-	//private final int DISTANCE_TO_SWITCH_MID = (170 - ROBOT_LENGTH / 2);
 	private final int DISTANCE_TO_SWITCH_MID = (170 - ROBOT_LENGTH / 3);
-	//private final int DISTANCE_TO_SWITCH_BACK = 196;
 	private final int DISTANCE_TO_SWITCH_BACK = 196 + ROBOT_LENGTH / 2;
 	private final int SWITCH_LENGTH = 154;
 	private final int LEFT_TURN = -85;
 	private final int RIGHT_TURN = 85;
-	//private final int MID_RIGHT = 40;
 	private final int MID_RIGHT = 35;
-	//private final int MID_LEFT = -40;
 	private final int MID_LEFT = -35;
-	//private final int HYPOTONUSE = 180;
 	private final int HYPOTONUSE = 100;
 
 	//Robot speeds
-	//private final double DRIVE_SPEED = 0.75;
 	private final double DRIVE_SPEED = 1.0;
-	//private final double TURN_SPEED = 0.65;
 	private final double TURN_SPEED = 0.75;
 
 	//Robot classes
@@ -210,8 +203,6 @@ public class AutoTestClass {
 		}
 		drive.stop();
 		fingers.setSpeed(1.0);
-
-		//boolean Corbo2000 Awww Yeah!!! = false;
 	}
 
 	private void sameSideSwitchAuto() {
@@ -317,15 +308,6 @@ public class AutoTestClass {
 		fingers.setSpeed(0);
 		hand.stow();
 		drive.stop();
-		/*
-		Timer.delay(0.2); //Give hand time to stow self
-		angle=selectAngle()/2;
-		reset();
-		while(getTime()<1 && !goodEnoughTurn(angle)) {
-			gyroTurn(TURN_SPEED, angle);
-		}
-		*/
-
 	}
 
 	private char switchLocation() {
@@ -392,7 +374,6 @@ public class AutoTestClass {
 	private void gyroDriveForward(double speed, double distance) {
 		double angle = -hw.gyro.getAngle();
 		double dist = hw.getDistance();
-		//double power = (dist - distance)/50;
 		double power = (distance - dist) / 25;
 		if (power > speed) {
 			power = speed;
@@ -403,29 +384,9 @@ public class AutoTestClass {
 		drive.arcade(power, normalize(angle / 100.0, speed));
 	}
 
-	/*
-	private void gyroDriveForward(double speed, double distance) {
-		double angle = -hw.gyro.getAngle();
-		double dist = hw.getDistance();
-		//if (distance > 0 && dist < distance)
-		if (goodEnoughDrive(distance)) {
-			drive.arcade(0, 0);
-		} else if (dist < distance) {
-			drive.arcade(speed, normalize(angle / 100.0, speed));
-		} //else if (dist > distance) {
-			else if (distance <= 0 && dist > distance) {
-		drive.arcade(-speed, normalize(angle / 100.0, speed));
-		}
-		
-		SmartDashboard.putNumber("Turn value gyroDriveForward", normalize(angle / 100.0, speed));
-	
-	}
-	 */
-
 	private void gyroTurn(double speed, double targetAngle) {
 		double currentAngle = hw.gyro.getAngle();
 
-		//double turn = (targetAngle - currentAngle) / 10.0;
 		double turn = (targetAngle - currentAngle) / 13;
 
 		drive.arcade(0, normalize(turn, speed));
