@@ -69,8 +69,8 @@ public class Robot extends TimedRobot {
 		double dLT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kLeft); //Left trigger
 		double dRT = ctrls.driver.getTriggerAxis(GenericHID.Hand.kRight); //Right trigger
 		boolean dRB = ctrls.driver.getBumper(GenericHID.Hand.kRight); //Right bumper
-		boolean dUp = ctrls.driver.getPOV() == 0; //DPad up
-		boolean dDown = ctrls.driver.getPOV() == 180; //DPad down
+		boolean dUp = ctrls.driver.getPOV() == Controls.POV.UP; //DPad up
+		boolean dDown = ctrls.driver.getPOV() == Controls.POV.DOWN; //DPad down
 		boolean dA = ctrls.driver.getAButton(); //A button
 		boolean dX = ctrls.driver.getXButton(); //X button
 		boolean dY = ctrls.driver.getYButton(); //Y button
