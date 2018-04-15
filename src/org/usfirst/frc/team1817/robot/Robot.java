@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1817.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID;
 
@@ -82,7 +83,6 @@ public class Robot extends TimedRobot {
 
 		shift.setInHighGear(shiftToggle.update(dRB));
 
-		//TODO Make sure this is doing what is expected
 		if (throttleToggleUp.update(dUp)) {
 			drive.changeThrottleDown(0.01);
 			throttleToggleUp.set(false);
@@ -103,10 +103,17 @@ public class Robot extends TimedRobot {
 		}
 
 		fingers.setSpeed(dRT - dLT);
-
-		SmartDashboard.putNumber("Left encoder", hw.leftEncoder.getDistance());
-		SmartDashboard.putNumber("Right Encoder", hw.rightEncoder.getDistance());
-		SmartDashboard.putNumber("Gyro", hw.gyro.getAngle());
+		
+		if(hw.cubeSensor.getVoltage()>1.05) {
+			ctrls.driver.setRumble(RumbleType.kLeftRumble, 1);
+		} else {
+			ctrls.driver.setRumble(RumbleType.kLeftRumble, 0);
+		}
+		if(hw.cubeSensor.getVoltage()>1.2) {
+			ctrls.driver.setRumble(RumbleType.kRightRumble, 1);
+		} else {
+			ctrls.driver.setRumble(RumbleType.kRightRumble, 0);
+		}
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1817.robot;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Servo;
@@ -19,12 +20,13 @@ public class Hardware {
     public final Servo frontShifter, backShifter;
     public final SpeedControllerGroup intake;
     public final VictorSP wrist;
+    public final AnalogInput cubeSensor;
 
     public Hardware() {
         VictorSP left = new VictorSP(0);
-        left.setInverted(false);
+        left.setInverted(true);
         VictorSP right = new VictorSP(1);
-        right.setInverted(false);
+        right.setInverted(true);
         chassis = new DifferentialDrive(left, right);
 
         VictorSP intake1 = new VictorSP(2);
@@ -50,6 +52,7 @@ public class Hardware {
         wristEncoder.setReverseDirection(true);
 
         pdp = new PowerDistributionPanel();
+        cubeSensor = new AnalogInput(0);
 
         gyro = new ADXRS450_Gyro();
         if (gyro.isConnected()) {
