@@ -24,6 +24,8 @@ public class Sensor_Watcher implements Runnable {
 
 			SmartDashboard.putNumber("Gyro", hw.gyro.getAngle());
 			SmartDashboard.putNumber("Amperage Draw", hw.pdp.getTotalCurrent());
+			
+			SmartDashboard.putNumber("Cube Sensor Voltage", hw.cubeSensor.getVoltage());
 			Timer.delay(0.005);
 		}
 
