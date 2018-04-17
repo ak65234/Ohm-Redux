@@ -9,13 +9,13 @@ public class Auto implements Runnable {
 
 	//Autonomous selectors
 	private final SendableChooser<String> AUTO = new SendableChooser<>();
-	private final String TIMED_CROSS = "Timed Cross Line";
+	private final String TIMED_CROSS = "Timed Cross Line/Delayed Encoder cross";
 	private final String SWITCH_AUTO = "Switch";
-	private final String WIP_CENTER = "WIP Center auto (2 cube)";
+	private final String TWO_CUBE = "Two cube (only from center on tested)";
 
 	private final SendableChooser<String> WHICH_AUTO = new SendableChooser<>();
 	private final String TESTED = "Tested (Worked at El Paso)";
-	private final String WIP = "Work in progress";
+	private final String WIP = "Work in progress (Better timing and tuning)";
 
 	//Alliance station selectors
 	private final SendableChooser<String> STATION = new SendableChooser<>();
@@ -69,7 +69,7 @@ public class Auto implements Runnable {
 
 		AUTO.addDefault(TIMED_CROSS, TIMED_CROSS);
 		AUTO.addObject(SWITCH_AUTO, SWITCH_AUTO);
-		AUTO.addObject(WIP_CENTER, WIP_CENTER);
+		AUTO.addObject(TWO_CUBE, TWO_CUBE);
 
 		SmartDashboard.putData("Auto", AUTO);
 
@@ -159,7 +159,7 @@ public class Auto implements Runnable {
 					oppositeSideSwitchAuto(time);
 				}
 				break;
-			case WIP_CENTER:
+			case TWO_CUBE:
 				middleSwitchAutoExp(time);
 				break;
 			}

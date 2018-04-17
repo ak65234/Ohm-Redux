@@ -7,14 +7,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 public class AutoTestClass {
 	//Autonomous selectors
 	private final SendableChooser<String> AUTO;
-	private final String TIMED_CROSS = "Timed Cross Line";
+	private final String TIMED_CROSS = "Timed Cross Line/Delayed Encoder cross";
 	private final String SWITCH_AUTO = "Switch";
-	private final String WIP_CENTER = "WIP Center auto (2 cube)";
+	private final String TWO_CUBE = "Two cube (only from center on tested)";
 
 	//Alliance station selectors
 	private final SendableChooser<String> STATION;
 	private final String LEFT_STATION = "Left station";
-	private final String RIGHT_STATION = "Right station";
+	//private final String RIGHT_STATION = "Right station";
 	private final String MIDDLE_STATION = "Middle station";
 
 	//Field specific constants
@@ -79,13 +79,7 @@ public class AutoTestClass {
 		new Thread(() -> {
 			switch (AUTO.getSelected()) {
 			case TIMED_CROSS:
-				if (switchLocation() == station.charAt(0)) {
-					sameSideSwitchAuto();
-					defendCloseCube();
-				} else {
-					oppositeSideSwitchAuto();
-				}
-				//timedCross();
+				encoderCross();
 				break;
 			case SWITCH_AUTO:
 				while (switchLocation() == 'E' && getTime() < 5.0) {
@@ -102,20 +96,33 @@ public class AutoTestClass {
 					oppositeSideSwitchAuto();
 				}
 				break;
-			case WIP_CENTER:
-				middleSwitchAuto();
-				secondCubeMid();
+			case TWO_CUBE:
+				while (switchLocation() == 'E' && getTime() < 5.0) {
+					//do nothing
+				}
+				reset();
+				if (switchLocation() == 'E') {
+					toSwitchMid();
+				} else if (switchLocation() == station.charAt(0)) {
+					sameSideSwitchAuto();
+					defendCloseCube();
+				} else if (station == MIDDLE_STATION) {
+					middleSwitchAuto();
+					secondCubeMid();
+				} else {
+					oppositeSideSwitchAuto();
+				}
 				break;
 			}
 		}).start();
 	}
 
-	private void timedCross() {
+	private void encoderCross() {
 		while (getTime() < 7.5) {
 			drive.stop();
 		}
 		while (getTime() < 11) {
-			drive.arcade(DRIVE_SPEED, 0);
+			gyroDriveForward(DRIVE_SPEED, DISTANCE_TO_SWITCH_MID);
 		}
 		drive.stop();
 	}
