@@ -79,13 +79,6 @@ public class AutoTestClass {
 		new Thread(() -> {
 			switch (AUTO.getSelected()) {
 			case TIMED_CROSS:
-				if (switchLocation() == station.charAt(0)) {
-					sameSideSwitchAuto();
-					defendCloseCube();
-				} else {
-					oppositeSideSwitchAuto();
-				}
-				//timedCross();
 				encoderCross();
 				break;
 			case SWITCH_AUTO:
@@ -104,18 +97,31 @@ public class AutoTestClass {
 				}
 				break;
 			case TWO_CUBE:
-				middleSwitchAuto();
-				secondCubeMid();
+				while (switchLocation() == 'E' && getTime() < 5.0) {
+					//do nothing
+				}
+				reset();
+				if (switchLocation() == 'E') {
+					toSwitchMid();
+				} else if (switchLocation() == station.charAt(0)) {
+					sameSideSwitchAuto();
+					defendCloseCube();
+				} else if (station == MIDDLE_STATION) {
+					middleSwitchAuto();
+					secondCubeMid();
+				} else {
+					oppositeSideSwitchAuto();
+				}
 				break;
 			}
 		}).start();
 	}
 
 	private void encoderCross() {
-		while(getTime()<7.5) {
+		while (getTime() < 7.5) {
 			drive.stop();
 		}
-		while(getTime()<11) {
+		while (getTime() < 11) {
 			gyroDriveForward(DRIVE_SPEED, DISTANCE_TO_SWITCH_MID);
 		}
 		drive.stop();
