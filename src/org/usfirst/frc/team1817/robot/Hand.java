@@ -120,4 +120,8 @@ public class Hand implements Runnable {
 			wrist.set(value);
 		}
 	}
+	
+	public boolean isExtended() {
+		return state==EXTEND;
+	}
 }

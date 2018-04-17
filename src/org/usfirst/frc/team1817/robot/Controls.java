@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1817.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class Controls {
     public final XboxController driver, manipulator;
@@ -15,5 +16,10 @@ public class Controls {
     public Controls() {
         driver = new XboxController(0);
         manipulator = new XboxController(1);
+    }
+    
+    public void rumbleIt(boolean near, boolean acquired, boolean extended) {
+    	driver.setRumble(RumbleType.kLeftRumble, near&&extended? 1:0);
+    	driver.setRumble(RumbleType.kRightRumble, acquired&&extended? 1:0);
     }
 }

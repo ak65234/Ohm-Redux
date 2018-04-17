@@ -1,9 +1,7 @@
 package org.usfirst.frc.team1817.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.TimedRobot;
 
 public class Robot extends TimedRobot {
 
@@ -104,16 +102,7 @@ public class Robot extends TimedRobot {
 
 		fingers.setSpeed(dRT - dLT);
 		
-		if(hw.cubeSensor.getVoltage()>1.05) {
-			ctrls.driver.setRumble(RumbleType.kLeftRumble, 1);
-		} else {
-			ctrls.driver.setRumble(RumbleType.kLeftRumble, 0);
-		}
-		if(hw.cubeSensor.getVoltage()>1.2) {
-			ctrls.driver.setRumble(RumbleType.kRightRumble, 1);
-		} else {
-			ctrls.driver.setRumble(RumbleType.kRightRumble, 0);
-		}
+		ctrls.rumbleIt(hw.nearCube(), hw.hasCube(),hand.isExtended());
 	}
 
 	@Override
