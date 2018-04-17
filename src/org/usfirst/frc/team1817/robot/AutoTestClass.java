@@ -9,7 +9,7 @@ public class AutoTestClass {
 	private final SendableChooser<String> AUTO;
 	private final String TIMED_CROSS = "Timed Cross Line";
 	private final String SWITCH_AUTO = "Switch";
-	private final String WIP_CENTER = "WIP Center auto (2 cube)";
+	private final String TWO_CUBE = "Two cube (only from center on tested)";
 
 	//Alliance station selectors
 	private final SendableChooser<String> STATION;
@@ -102,7 +102,7 @@ public class AutoTestClass {
 					oppositeSideSwitchAuto();
 				}
 				break;
-			case WIP_CENTER:
+			case TWO_CUBE:
 				middleSwitchAuto();
 				secondCubeMid();
 				break;
