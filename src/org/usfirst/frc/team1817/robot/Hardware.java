@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class Hardware {
     //private final double DISTANCE_PER_PULSE = Math.PI * 6.0 / 250.0;
     private final double DISTANCE_PER_PULSE = Math.PI * 6.0 / 60;
+    
+    private final double NEAR_CUBE = 0.9;
+    private final double HAS_CUBE = 1.15;
 
     public final DifferentialDrive chassis;
     public final Encoder leftEncoder, rightEncoder, wristEncoder;
@@ -72,6 +75,14 @@ public class Hardware {
         rightEncoder.reset();
     }
 
+    public boolean nearCube() {
+    	return cubeSensor.getVoltage() >= NEAR_CUBE;
+    }
+    
+    public boolean hasCube() {
+    	return cubeSensor.getVoltage() >= HAS_CUBE;
+    }
+    
     /**
      * Returns if the encoders and gyro are at a rest
      */
