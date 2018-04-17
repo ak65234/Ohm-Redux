@@ -14,7 +14,7 @@ public class AutoTestClass {
 	//Alliance station selectors
 	private final SendableChooser<String> STATION;
 	private final String LEFT_STATION = "Left station";
-	private final String RIGHT_STATION = "Right station";
+	//private final String RIGHT_STATION = "Right station";
 	private final String MIDDLE_STATION = "Middle station";
 
 	//Field specific constants
@@ -116,6 +116,16 @@ public class AutoTestClass {
 		}
 		while (getTime() < 11) {
 			drive.arcade(DRIVE_SPEED, 0);
+		}
+		drive.stop();
+	}
+	
+	private void encoderCross() {
+		while(getTime()<7.5) {
+			drive.stop();
+		}
+		while(getTime()<11) {
+			gyroDriveForward(DRIVE_SPEED, DISTANCE_TO_SWITCH_MID);
 		}
 		drive.stop();
 	}
