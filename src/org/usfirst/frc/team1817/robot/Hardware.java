@@ -21,7 +21,7 @@ public class Hardware {
     public final ADXRS450_Gyro gyro;
     public final PowerDistributionPanel pdp;
     public final Servo frontShifter, backShifter;
-    public final SpeedControllerGroup intake;
+    public final SpeedControllerGroup intake, shoulder;
     public final VictorSP wrist;
     public final AnalogInput cubeSensor;
 
@@ -36,6 +36,11 @@ public class Hardware {
         intake1.setInverted(true);
         VictorSP intake2 = new VictorSP(6);
         intake = new SpeedControllerGroup(intake2, intake1);
+        
+        VictorSP shoulder1 = new VictorSP(3);
+        shoulder1.setInverted(true);
+        VictorSP shoulder2 = new VictorSP(4);
+        shoulder = new SpeedControllerGroup(shoulder1, shoulder2);
 
         wrist = new VictorSP(7);
 
