@@ -3,6 +3,7 @@ package org.usfirst.frc.team1817.robot;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shoulder implements Runnable {
 
@@ -32,6 +33,10 @@ public class Shoulder implements Runnable {
 
 	public void run() {
 		while (!Thread.interrupted()) {
+			
+			SmartDashboard.putNumber("Shoulder encoder", shoulderEncoder.getDistance());
+			SmartDashboard.putNumber("Shoulder state", state);
+			
 			switch(state) {
 			case FLAT:
 				setPosition(FLAT_THRESH);
