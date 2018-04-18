@@ -34,10 +34,13 @@ public class Shoulder implements Runnable {
 			
 			switch(state) {
 			case FLAT:
+				setPosition(FLAT_THRESH);
 				break;
 			case SCORE:
+				setPosition(SCORE_THRESH);
 				break;
 			case UP:
+				setPosition(UP_THESH);
 				break;
 			}
 
