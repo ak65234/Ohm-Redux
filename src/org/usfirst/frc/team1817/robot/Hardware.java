@@ -17,7 +17,7 @@ public class Hardware {
     private final double HAS_CUBE = 1.15;
 
     public final DifferentialDrive chassis;
-    public final Encoder leftEncoder, rightEncoder, wristEncoder;
+    public final Encoder leftEncoder, rightEncoder, wristEncoder, shoulderEncoder;
     public final ADXRS450_Gyro gyro;
     public final PowerDistributionPanel pdp;
     public final Servo frontShifter, backShifter;
@@ -58,6 +58,8 @@ public class Hardware {
         //wristEncoder = new Encoder(4, 5);
         wristEncoder = new Encoder(0, 1);
         wristEncoder.setReverseDirection(true);
+        
+        shoulderEncoder = new Encoder(6,7);
 
         pdp = new PowerDistributionPanel();
         cubeSensor = new AnalogInput(0);
