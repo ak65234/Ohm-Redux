@@ -12,6 +12,7 @@ public class Robot extends TimedRobot {
 	private Shift shift;
 	private Hand hand;
 	private Fingers fingers;
+	private Shoulder shoulder;
 
 	private Toggle shiftToggle;
 	private Toggle throttleToggleUp;
@@ -76,7 +77,10 @@ public class Robot extends TimedRobot {
 
 		double mLT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kLeft); //Left trigger
 		double mRT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kRight); //Right trigger
-
+		boolean mUp = ctrls.manipulator.getPOV() == Controls.POV.UP;
+		boolean mDown = ctrls.manipulator.getPOV() == Controls.POV.DOWN;
+		boolean mRight = ctrls.manipulator.getPOV() == Controls.POV.RIGHT;
+		
 		drive.arcade(-dLY, dRX);
 
 		shift.setInHighGear(shiftToggle.update(dRB));
@@ -98,6 +102,14 @@ public class Robot extends TimedRobot {
 			hand.stow();
 		} else {
 			hand.manualMove(mLT - mRT);
+		}
+		
+		if(mUp) {
+			shoulder.up();
+		} else if(mDown) {
+			shoulder.flat();
+		} else if(mRight){
+			shoulder.score();
 		}
 
 		fingers.setSpeed(dRT - dLT);
