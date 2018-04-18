@@ -2,6 +2,7 @@ package org.usfirst.frc.team1817.robot;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Timer;
 
 public class Shoulder implements Runnable {
 
@@ -31,7 +32,6 @@ public class Shoulder implements Runnable {
 
 	public void run() {
 		while (!Thread.interrupted()) {
-			
 			switch(state) {
 			case FLAT:
 				setPosition(FLAT_THRESH);
@@ -43,7 +43,7 @@ public class Shoulder implements Runnable {
 				setPosition(UP_THESH);
 				break;
 			}
-
+			Timer.delay(0.005);
 		}
 	}
 	
