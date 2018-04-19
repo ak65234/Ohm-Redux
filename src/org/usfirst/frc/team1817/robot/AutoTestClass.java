@@ -209,13 +209,13 @@ public class AutoTestClass {
 		reset();
 		angle = -selectAngle() * 2.35;
 		while (getTime() < 1.5 && !goodEnoughTurn(angle)) { //Face stack
+			hand.topShelf();
 			gyroTurn(TURN_SPEED, angle);
 		}
 		reset();
 		dist = SWITCH_LENGTH / 2 - ROBOT_LENGTH;
 		while (getTime() < 2.0 && !goodEnoughDrive(dist)) { //Enter the cubes
 			gyroDriveForward(0.5, dist);
-			hand.extend();
 			fingers.setSpeed(fingers.INTAKE);
 		}
 		reset();
