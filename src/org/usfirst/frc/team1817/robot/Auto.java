@@ -162,6 +162,10 @@ public class Auto implements Runnable {
 			case TWO_CUBE:
 				middleSwitchAutoExp(time);
 				break;
+			default:
+				System.out.println("Something went wrong!\nRunning default auto");
+				timedCross(time);
+				break;
 			}
 		} else { //WORK IN PROGRESS AUTONS
 			stop();

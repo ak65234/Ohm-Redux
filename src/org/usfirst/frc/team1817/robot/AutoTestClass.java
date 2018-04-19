@@ -135,6 +135,10 @@ public class AutoTestClass {
 					oppositeSideSwitchAuto();
 				}
 				break;
+			default:
+				System.out.println("Something went wrong!\nRunning default auto");
+				encoderCross();
+				break;
 			}
 		}).start();
 	}
