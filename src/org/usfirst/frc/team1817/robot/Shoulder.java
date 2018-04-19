@@ -10,7 +10,7 @@ public class Shoulder implements Runnable{
 	
 	Thread t;
 	
-	private final double DEADBAND = 0.05;
+	private final double DEADBAND = 0.07;
 	
 	public Shoulder(Hardware hw) {
 		this.shoulder = hw.shoulder;
@@ -34,7 +34,9 @@ public class Shoulder implements Runnable{
 	
 	public void manualMove(double value) {
 		if (validRange(value)) {
-			shoulder.set(value);
+			shoulder.set(value/4.0);
+		} else {
+			shoulder.set(0);
 		}
 	}
 	

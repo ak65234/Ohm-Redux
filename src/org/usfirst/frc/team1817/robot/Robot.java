@@ -74,10 +74,11 @@ public class Robot extends TimedRobot {
 		boolean dA = ctrls.driver.getAButton(); //A button
 		boolean dX = ctrls.driver.getXButton(); //X button
 		boolean dY = ctrls.driver.getYButton(); //Y button
+		boolean dB = ctrls.driver.getBButton(); //B button
 
 		double mLT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kLeft); //Left trigger
 		double mRT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kRight); //Right trigger
-		double mRY = ctrls.driver.getY(GenericHID.Hand.kRight); //Left Y axis
+		double mRY = ctrls.manipulator.getY(GenericHID.Hand.kRight); //Left Y axis
 		boolean mUp = ctrls.manipulator.getPOV() == Controls.POV.UP;
 		boolean mDown = ctrls.manipulator.getPOV() == Controls.POV.DOWN;
 		boolean mRight = ctrls.manipulator.getPOV() == Controls.POV.RIGHT;
@@ -86,7 +87,7 @@ public class Robot extends TimedRobot {
 
 		shift.setInHighGear(shiftToggle.update(dRB));
 		
-		shoulder.manualMove(mRY);
+		//shoulder.manualMove(mRY);
 
 		if (throttleToggleUp.update(dUp)) {
 			drive.changeThrottleDown(0.01);
@@ -103,6 +104,8 @@ public class Robot extends TimedRobot {
 			hand.score();
 		} else if (dY) {
 			hand.stow();
+		} else if(dB) {
+			hand.topShelf();
 		} else {
 			hand.manualMove(mLT - mRT);
 		}

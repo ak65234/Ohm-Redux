@@ -36,8 +36,8 @@ public class Hardware {
 		intake = new SpeedControllerGroup(intake2, intake1);
 
 		VictorSP shoulder1 = new VictorSP(8);
+		shoulder1.setInverted(true);
 		VictorSP shoulder2 = new VictorSP(9);
-		shoulder2.setInverted(true);
 
 		shoulder = new SpeedControllerGroup(shoulder1, shoulder2);
 
