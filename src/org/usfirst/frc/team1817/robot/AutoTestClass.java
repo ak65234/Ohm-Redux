@@ -79,7 +79,11 @@ public class AutoTestClass {
 		new Thread(() -> {
 			switch (AUTO.getSelected()) {
 			case TIMED_CROSS:
-				encoderCross();
+				if(switchLocation() != station.charAt(0)) {
+					encoderCross();
+				} else {
+					sameSideSwitchAuto();
+				}
 				break;
 			case SWITCH_AUTO:
 				while (switchLocation() == 'E' && getTime() < 5.0) {
