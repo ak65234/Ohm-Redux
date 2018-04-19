@@ -9,7 +9,7 @@ public class Hand implements Runnable {
 	private final int STOWED_THRESH = 30;
 	//private final int EXTENDED_THRESH = 310;
 	//private final int SCORE_THRESH = 215;
-	private final int EXTENDED_THRESH = 355;
+	private final int EXTENDED_THRESH = 370;
 	private final int SCORE_THRESH = 215;
 	private final int TOP_SHELF_THRESH = 300;
 	private final double DEADBAND = 0.05;
