@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 public class AutoTestClass {
 	//Autonomous selectors
 	private final SendableChooser<String> AUTO;
-	private final String TIMED_CROSS = "Timed Cross Line/Delayed Encoder cross";
-	private final String SWITCH_AUTO = "Switch";
-	private final String TWO_CUBE = "Two cube (only from center on tested)";
+	private final String TIMED_CROSS = "Delayed cross + possible cube";
+	private final String SWITCH_AUTO = "One cube";
+	private final String TWO_CUBE = "Two cube";
 
 	//Alliance station selectors
 	private final SendableChooser<String> STATION;
