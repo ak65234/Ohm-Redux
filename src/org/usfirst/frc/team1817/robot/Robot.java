@@ -77,6 +77,7 @@ public class Robot extends TimedRobot {
 
 		double mLT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kLeft); //Left trigger
 		double mRT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kRight); //Right trigger
+		double mRY = ctrls.driver.getY(GenericHID.Hand.kRight); //Left Y axis
 		boolean mUp = ctrls.manipulator.getPOV() == Controls.POV.UP;
 		boolean mDown = ctrls.manipulator.getPOV() == Controls.POV.DOWN;
 		boolean mRight = ctrls.manipulator.getPOV() == Controls.POV.RIGHT;
@@ -84,6 +85,8 @@ public class Robot extends TimedRobot {
 		drive.arcade(-dLY, dRX);
 
 		shift.setInHighGear(shiftToggle.update(dRB));
+		
+		shoulder.manualMove(mRY);
 
 		if (throttleToggleUp.update(dUp)) {
 			drive.changeThrottleDown(0.01);
