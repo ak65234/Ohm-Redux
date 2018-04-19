@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class Fingers implements Runnable {
     private final double DEADZONE = 0.1;
+    
+    public final double INTAKE = 1;
+    public final double OUTTAKE = -1;
 
     private int state;
     private final int DISABLED = 0;

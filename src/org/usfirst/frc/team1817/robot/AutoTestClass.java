@@ -166,7 +166,7 @@ public class AutoTestClass {
 		reset();
 		while (getTime() < 1.5) { //Shoot
 			drive.stop();
-			fingers.setSpeed(1.0);
+			fingers.setSpeed(fingers.OUTTAKE);
 		}
 		fingers.setSpeed(0);
 		hand.stow();
@@ -190,7 +190,7 @@ public class AutoTestClass {
 		while (getTime() < 2.0 && !goodEnoughDrive(dist)) { //Enter the cubes
 			gyroDriveForward(0.5, dist);
 			hand.topShelf();
-			fingers.setSpeed(1.0);
+			fingers.setSpeed(fingers.INTAKE);
 		}
 		reset();
 		hand.stow();
@@ -207,10 +207,10 @@ public class AutoTestClass {
 		reset();
 		while (getTime() < 1.0) { //Drive into switch
 			drive.arcade(0.5, 0);
-			hand.extend();
+			hand.score();
 		}
 		drive.stop();
-		fingers.setSpeed(1.0);
+		fingers.setSpeed(fingers.OUTTAKE);
 	}
 
 	private void sameSideSwitchAuto() {
@@ -239,8 +239,10 @@ public class AutoTestClass {
 		}
 		reset();
 		while (getTime() < 2) {
-			fingers.setSpeed(1);
+			fingers.setSpeed(fingers.OUTTAKE);
 		}
+		fingers.setSpeed(0);
+		hand.stow();
 	}
 
 	//TODO Test and tune
@@ -276,7 +278,7 @@ public class AutoTestClass {
 		reset();
 		while (getTime() < 2.0) {
 			drive.stop();
-			fingers.setSpeed(1);
+			fingers.setSpeed(fingers.OUTTAKE);
 		}
 	}
 
@@ -309,7 +311,7 @@ public class AutoTestClass {
 		}
 		reset();
 		hand.extend();
-		fingers.setSpeed(-2);
+		fingers.setSpeed(fingers.INTAKE);
 		while (getTime() < 1.25) {
 			drive.arcade(0.6, 0);
 		}
