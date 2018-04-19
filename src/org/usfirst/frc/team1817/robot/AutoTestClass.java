@@ -91,6 +91,7 @@ public class AutoTestClass {
 					while(getTime() < 2.0 && !goodEnoughTurn(turn)) {
 						gyroTurn(TURN_SPEED, turn);
 					}
+					drive.stop();
 				}
 				break;
 			case SWITCH_AUTO:
@@ -102,6 +103,15 @@ public class AutoTestClass {
 					toSwitchMid();
 				} else if (switchLocation() == station.charAt(0)) {
 					sameSideSwitchAuto();
+					while(getTime() <0.5) {
+						drive.arcade(-0.5, 0);
+					}
+					reset();
+					double turn = -selectAngle();
+					while(getTime() < 2.0 && !goodEnoughTurn(turn)) {
+						gyroTurn(TURN_SPEED, turn);
+					}
+					drive.stop();
 				} else if (station == MIDDLE_STATION) {
 					middleSwitchAuto();
 				} else {
