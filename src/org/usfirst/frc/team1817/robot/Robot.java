@@ -12,7 +12,7 @@ public class Robot extends TimedRobot {
 	private Shift shift;
 	private Hand hand;
 	private Fingers fingers;
-
+	private Shoulder shoulder;
 	private Toggle shiftToggle;
 	private Toggle throttleToggleUp;
 	private Toggle throttleToggleDown;
@@ -26,6 +26,7 @@ public class Robot extends TimedRobot {
 		shift = new Shift(hw);
 		hand = new Hand(hw);
 		fingers = new Fingers(hw);
+		shoulder = new Shoulder(hw);
 
 		shiftToggle = new Toggle();
 		throttleToggleUp = new Toggle();
