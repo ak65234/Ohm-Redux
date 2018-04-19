@@ -9,7 +9,8 @@ public class Shoulder implements Runnable{
 	Encoder shoulderEncoder;
 	
 	public Shoulder(Hardware hw) {
-		
+		this.shoulder = hw.shoulder;
+		this.shoulderEncoder = hw.shoulderEncoder;
 	}
 	
 	public void run() {
