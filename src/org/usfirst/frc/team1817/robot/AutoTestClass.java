@@ -83,6 +83,14 @@ public class AutoTestClass {
 					encoderCross();
 				} else {
 					sameSideSwitchAuto();
+					while(getTime() <0.5) {
+						drive.arcade(-0.5, 0);
+					}
+					reset();
+					double turn = -selectAngle();
+					while(getTime() < 2.0 && !goodEnoughTurn(turn)) {
+						gyroTurn(TURN_SPEED, turn);
+					}
 				}
 				break;
 			case SWITCH_AUTO:
