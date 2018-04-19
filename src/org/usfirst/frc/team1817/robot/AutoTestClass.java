@@ -215,7 +215,7 @@ public class AutoTestClass {
 		dist = SWITCH_LENGTH / 2 - ROBOT_LENGTH;
 		while (getTime() < 2.0 && !goodEnoughDrive(dist)) { //Enter the cubes
 			gyroDriveForward(0.5, dist);
-			hand.topShelf();
+			hand.extend();
 			fingers.setSpeed(fingers.INTAKE);
 		}
 		reset();
