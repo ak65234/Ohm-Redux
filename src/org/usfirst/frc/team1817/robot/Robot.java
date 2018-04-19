@@ -12,7 +12,6 @@ public class Robot extends TimedRobot {
 	private Shift shift;
 	private Hand hand;
 	private Fingers fingers;
-	private Shoulder shoulder;
 
 	private Toggle shiftToggle;
 	private Toggle throttleToggleUp;
@@ -105,11 +104,11 @@ public class Robot extends TimedRobot {
 		}
 		
 		if(mUp) {
-			shoulder.up();
+			//shoulder.up();
 		} else if(mDown) {
-			shoulder.flat();
+			//shoulder.flat();
 		} else if(mRight){
-			shoulder.score();
+			//shoulder.score();
 		}
 
 		fingers.setSpeed(dRT - dLT);

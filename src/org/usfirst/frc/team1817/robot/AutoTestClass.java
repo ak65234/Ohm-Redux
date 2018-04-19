@@ -159,7 +159,7 @@ public class AutoTestClass {
 			gyroTurn(TURN_SPEED, angle);
 		}
 		reset();
-		while (getTime() < 0.5) { //Drive into switch
+		while (getTime() < 0.75) { //Drive into switch
 			drive.arcade(0.6, 0);
 			hand.score();
 		}
@@ -189,14 +189,14 @@ public class AutoTestClass {
 		dist = SWITCH_LENGTH / 2 - ROBOT_LENGTH;
 		while (getTime() < 2.0 && !goodEnoughDrive(dist)) { //Enter the cubes
 			gyroDriveForward(0.5, dist);
-			hand.extend();
+			hand.topShelf();
 			fingers.setSpeed(1.0);
 		}
 		reset();
 		hand.stow();
 		fingers.setSpeed(0.0);
 		dist *= -0.9;
-		while (getTime() < 2.0 && !goodEnoughDrive(dist)) { //Back away
+		while (getTime() < 1.5 && !goodEnoughDrive(dist)) { //Back away
 			gyroDriveForward(0.5, dist);
 		}
 		reset();
@@ -207,6 +207,7 @@ public class AutoTestClass {
 		reset();
 		while (getTime() < 1.0) { //Drive into switch
 			drive.arcade(0.5, 0);
+			hand.extend();
 		}
 		drive.stop();
 		fingers.setSpeed(1.0);
@@ -356,7 +357,7 @@ public class AutoTestClass {
 	private boolean goodEnoughTurn(double angle) {
 		if (!isAuto())
 			return true;
-		return Math.abs((hw.gyro.getAngle()) - angle) < 2.5 && hw.driveAtRest();
+		return Math.abs((hw.gyro.getAngle()) - angle) < 5 && hw.driveAtRest();
 	}
 
 	private boolean isAuto() {

@@ -7,8 +7,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Hand implements Runnable {
 	private final int STOWED_THRESH = 30;
-	private final int EXTENDED_THRESH = 310;
+	//private final int EXTENDED_THRESH = 310;
+	//private final int SCORE_THRESH = 215;
+	private final int EXTENDED_THRESH = 355;
 	private final int SCORE_THRESH = 215;
+	private final int TOP_SHELF_THRESH = 300;
 	private final double DEADBAND = 0.05;
 	private final double REDUCED = 0.35;
 	private final double MAX = 0.85;
@@ -19,6 +22,7 @@ public class Hand implements Runnable {
 	private final int STOW = 1;
 	private final int EXTEND = 2;
 	private final int SCORE = 3;
+	private final int TOP_SHELF = 4;
 
 	private final Encoder wristEncoder;
 	private final VictorSP wrist;
@@ -60,6 +64,9 @@ public class Hand implements Runnable {
 			case SCORE:
 				setPosition(SCORE_THRESH);
 				break;
+			case TOP_SHELF:
+				setPosition(TOP_SHELF_THRESH);
+				break;
 			}
 
 			//Timer.delay(0.005);
@@ -82,6 +89,10 @@ public class Hand implements Runnable {
 	public void score() {
 		state = SCORE;
 	}
+	
+	public void topShelf() {
+		state = TOP_SHELF;
+	}
 
 	private void setPosition(double targetPos) {
 		double currentPos = wristEncoder.getDistance();
@@ -99,7 +110,7 @@ public class Hand implements Runnable {
 		}
 		speed = deadBand(speed);
 
-		wrist.set(-speed);
+		wrist.set(speed);
 	}
 
 	private double normalize(double value, double max) {

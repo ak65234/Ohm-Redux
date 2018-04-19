@@ -10,37 +10,37 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Hardware {
-    //private final double DISTANCE_PER_PULSE = Math.PI * 6.0 / 250.0;
-    private final double DISTANCE_PER_PULSE = Math.PI * 6.0 / 60;
+    private final double DISTANCE_PER_PULSE = Math.PI * 6.0 / 250.0;
+    //private final double DISTANCE_PER_PULSE = Math.PI * 6.0 / 60;
     
     private final double NEAR_CUBE = 0.9;
     private final double HAS_CUBE = 1.15;
 
     public final DifferentialDrive chassis;
-    public final Encoder leftEncoder, rightEncoder, wristEncoder, shoulderEncoder;
+    public final Encoder leftEncoder, rightEncoder, wristEncoder;//, shoulderEncoder;
     public final ADXRS450_Gyro gyro;
     public final PowerDistributionPanel pdp;
     public final Servo frontShifter, backShifter;
-    public final SpeedControllerGroup intake, shoulder;
+    public final SpeedControllerGroup intake;//, shoulder;
     public final VictorSP wrist;
     public final AnalogInput cubeSensor;
 
     public Hardware() {
         VictorSP left = new VictorSP(0);
-        left.setInverted(true);
         VictorSP right = new VictorSP(1);
-        right.setInverted(true);
         chassis = new DifferentialDrive(left, right);
 
         VictorSP intake1 = new VictorSP(2);
-        intake1.setInverted(true);
         VictorSP intake2 = new VictorSP(6);
+        intake2.setInverted(true);
         intake = new SpeedControllerGroup(intake2, intake1);
         
-        VictorSP shoulder1 = new VictorSP(3);
+        /*
+        VictorSP shoulder1 = new VictorSP(8);
         shoulder1.setInverted(true);
-        VictorSP shoulder2 = new VictorSP(4);
+        VictorSP shoulder2 = new VictorSP(9);
         shoulder = new SpeedControllerGroup(shoulder1, shoulder2);
+        */
 
         wrist = new VictorSP(7);
 
@@ -57,9 +57,9 @@ public class Hardware {
 
         //wristEncoder = new Encoder(4, 5);
         wristEncoder = new Encoder(0, 1);
-        wristEncoder.setReverseDirection(true);
+        //wristEncoder.setReverseDirection(true);
         
-        shoulderEncoder = new Encoder(6,7);
+        //shoulderEncoder = new Encoder(6,7);
 
         pdp = new PowerDistributionPanel();
         cubeSensor = new AnalogInput(0);
