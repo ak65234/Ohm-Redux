@@ -45,8 +45,12 @@ public class Hardware {
 
 		wrist = new VictorSP(7);
 
+		/*
 		frontShifter = new Servo(8);
 		backShifter = new Servo(9);
+		*/
+		frontShifter = new Servo (11);
+		backShifter = new Servo(12);
 
 		//leftEncoder = new Encoder(0, 1);
 		leftEncoder = new Encoder(2, 3);
