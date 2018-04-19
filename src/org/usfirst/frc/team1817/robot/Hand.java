@@ -102,7 +102,7 @@ public class Hand implements Runnable {
 		boolean againstGravity = state == SCORE // SCORING always fights gravity
 				|| state == EXTEND && currentPos < SCORE_THRESH // Moving to EXTEND from STOW
 				|| state == STOW && currentPos > SCORE_THRESH / 2.0 // Moving to STOW while EXTENDED
-				|| state == TOP_SHELF && currentPos < SCORE_THRESH / 2.0; 
+				|| state == TOP_SHELF; 
 		if (againstGravity) {
 			speed = normalize(speed, MAX);
 		} else {
