@@ -79,16 +79,16 @@ public class AutoTestClass {
 		new Thread(() -> {
 			switch (AUTO.getSelected()) {
 			case TIMED_CROSS:
-				if(switchLocation() != station.charAt(0)) {
+				if (switchLocation() != station.charAt(0)) {
 					encoderCross();
 				} else {
 					sameSideSwitchAuto();
-					while(getTime() <0.5) {
+					while (getTime() < 0.5) {
 						drive.arcade(-0.5, 0);
 					}
 					reset();
 					double turn = -selectAngle();
-					while(getTime() < 2.0 && !goodEnoughTurn(turn)) {
+					while (getTime() < 2.0 && !goodEnoughTurn(turn)) {
 						gyroTurn(TURN_SPEED, turn);
 					}
 					drive.stop();
@@ -103,12 +103,12 @@ public class AutoTestClass {
 					toSwitchMid();
 				} else if (switchLocation() == station.charAt(0)) {
 					sameSideSwitchAuto();
-					while(getTime() <0.5) {
+					while (getTime() < 0.5) {
 						drive.arcade(-0.5, 0);
 					}
 					reset();
 					double turn = -selectAngle();
-					while(getTime() < 2.0 && !goodEnoughTurn(turn)) {
+					while (getTime() < 2.0 && !goodEnoughTurn(turn)) {
 						gyroTurn(TURN_SPEED, turn);
 					}
 					drive.stop();
@@ -214,6 +214,9 @@ public class AutoTestClass {
 		}
 		reset();
 		dist = SWITCH_LENGTH / 2 - ROBOT_LENGTH;
+		if (switchLocation() == 'R') {
+			dist += 6;
+		}
 		while (getTime() < 2.0 && !goodEnoughDrive(dist)) { //Enter the cubes
 			gyroDriveForward(0.5, dist);
 			fingers.setSpeed(fingers.INTAKE);
