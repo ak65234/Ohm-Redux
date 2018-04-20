@@ -41,7 +41,7 @@ public class Hardware {
 
 		shoulder = new SpeedControllerGroup(shoulder1, shoulder2);
 
-		shoulderEncoder = new Encoder(6,7);
+		shoulderEncoder = new Encoder(5,6);
 
 		wrist = new VictorSP(7);
 
@@ -57,7 +57,8 @@ public class Hardware {
 		leftEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
 		leftEncoder.setReverseDirection(true);
 
-		rightEncoder = new Encoder(4, 5);
+		//rightEncoder = new Encoder(4, 5);
+		rightEncoder = new Encoder(14, 15);
 		rightEncoder.setDistancePerPulse(DISTANCE_PER_PULSE);
 
 		//wristEncoder = new Encoder(4, 5);

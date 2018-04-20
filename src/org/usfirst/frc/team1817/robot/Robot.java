@@ -87,7 +87,7 @@ public class Robot extends TimedRobot {
 
 		shift.setInHighGear(shiftToggle.update(dRB));
 		
-		shoulder.manualMove(mRY);
+		//shoulder.manualMove(mRY);
 
 		if (throttleToggleUp.update(dUp)) {
 			drive.changeThrottleDown(0.01);
