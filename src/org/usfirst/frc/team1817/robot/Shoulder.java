@@ -34,7 +34,11 @@ public class Shoulder implements Runnable{
 	
 	public void manualMove(double value) {
 		if (validRange(value)) {
-			shoulder.set(value/4.0);
+			if(value>0.0) {
+				shoulder.set(value/4.0);
+			} else {
+				shoulder.set(value);
+			}
 		} else {
 			shoulder.set(0);
 		}
