@@ -66,7 +66,7 @@ public class Hardware {
 
 
 		pdp = new PowerDistributionPanel();
-		cubeSensor = new AnalogInput(0);
+		cubeSensor = new AnalogInput(3);
 
 		gyro = new ADXRS450_Gyro();
 		if (gyro.isConnected()) {

@@ -25,8 +25,8 @@ public class AutoTestClass {
 	private final int SWITCH_LENGTH = 154;
 	private final int LEFT_TURN = -85;
 	private final int RIGHT_TURN = 85;
-	private final int MID_RIGHT = 30;
-	private final int MID_LEFT = -30;
+	private final int MID_RIGHT = 35;
+	private final int MID_LEFT = -35;
 	private final int HYPOTONUSE = 100;
 
 	//Robot speeds
@@ -203,13 +203,13 @@ public class AutoTestClass {
 	private void secondCubeMid() {
 		double angle;
 		double dist;
-		while (getTime() < 0.6) { // First backoff
+		while (getTime() < 1.0) { // First backoff
 			drive.arcade(-0.5, 0.0);
 		}
 		reset();
-		angle = -selectAngle() * 2.35;
+		angle = -selectAngle() * 2.0;
 		while (getTime() < 1.5 && !goodEnoughTurn(angle)) { //Face stack
-			hand.topShelf();
+			hand.extend();
 			gyroTurn(TURN_SPEED, angle);
 		}
 		reset();
@@ -218,7 +218,7 @@ public class AutoTestClass {
 			dist += 6;
 		}
 		while (getTime() < 2.0 && !goodEnoughDrive(dist)) { //Enter the cubes
-			gyroDriveForward(0.5, dist);
+			gyroDriveForward(0.6, dist);
 			fingers.setSpeed(fingers.INTAKE);
 		}
 		reset();
