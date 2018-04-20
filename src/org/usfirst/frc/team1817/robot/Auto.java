@@ -9,7 +9,7 @@ public class Auto implements Runnable {
 
 	//Autonomous selectors
 	private final SendableChooser<String> AUTO = new SendableChooser<>();
-	private final String TIMED_CROSS = "Delayed cross";
+	private final String TIMED_CROSS = "Delayed cross + possible cube";
 	private final String SWITCH_AUTO = "One cube";
 	private final String TWO_CUBE = "Two cube";
 

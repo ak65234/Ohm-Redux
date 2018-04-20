@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1817.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -110,13 +111,13 @@ public class Drive implements Runnable {
 
 	public void arcade(double power, double turn) {
 		mode = ARCADE;
-		if (getDriveCurrent() < 120 || throttleDown < 0.0009) {
+		if (getDriveCurrent() < 120 || throttleDown < 0.0009 && !DriverStation.getInstance().isAutonomous()) {
 			double deltaP = Math.max(Math.min(power - leftOrPower, ramp), -ramp);
 			double deltaT = Math.max(Math.min(turn - rightOrTurn, ramp), -ramp);
 
 			leftOrPower += deltaP;
 			rightOrTurn += deltaT;
-		} else { //Throttle down the gearbox to conserve power
+		} else if(!DriverStation.getInstance().isAutonomous()){ //Throttle down the gearbox to conserve power
 			double deltaP, deltaT;
 			if (leftOrPower > 0) {
 				deltaP = -throttleDown;

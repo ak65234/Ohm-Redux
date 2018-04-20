@@ -14,7 +14,7 @@ public class AutoTestClass {
 	//Alliance station selectors
 	private final SendableChooser<String> STATION;
 	private final String LEFT_STATION = "Left station";
-	//private final String RIGHT_STATION = "Right station";
+	private final String RIGHT_STATION = "Right station";
 	private final String MIDDLE_STATION = "Middle station";
 
 	//Field specific constants
@@ -25,8 +25,8 @@ public class AutoTestClass {
 	private final int SWITCH_LENGTH = 154;
 	private final int LEFT_TURN = -85;
 	private final int RIGHT_TURN = 85;
-	private final int MID_RIGHT = 35;
-	private final int MID_LEFT = -35;
+	private final int MID_RIGHT = 30;
+	private final int MID_LEFT = -30;
 	private final int HYPOTONUSE = 100;
 
 	//Robot speeds
@@ -144,10 +144,10 @@ public class AutoTestClass {
 	}
 
 	private void encoderCross() {
-		while (getTime() < 7.5) {
+		while (getTime() < 10.5) {
 			drive.stop();
 		}
-		while (getTime() < 11) {
+		while (getTime() < 14) {
 			gyroDriveForward(DRIVE_SPEED, DISTANCE_TO_SWITCH_MID);
 		}
 		drive.stop();
@@ -203,7 +203,7 @@ public class AutoTestClass {
 	private void secondCubeMid() {
 		double angle;
 		double dist;
-		while (getTime() < 0.75) { // First backoff
+		while (getTime() < 0.6) { // First backoff
 			drive.arcade(-0.5, 0.0);
 		}
 		reset();
@@ -331,9 +331,9 @@ public class AutoTestClass {
 		reset();
 		angle *= -1;
 		if (angle < 0) {
-			angle -= 30;
+			angle -= 50;
 		} else {
-			angle += 30;
+			angle += 50;
 		}
 		while (getTime() < 2 && !goodEnoughTurn(angle)) {
 			gyroTurn(TURN_SPEED, angle);
