@@ -206,8 +206,14 @@ public class AutoTestClass {
 	private void secondCubeMid() {
 		double angle;
 		double dist;
+		/*
 		while (getTime() < 2.0) { // First backoff
 			drive.arcade(-0.5, 0.0);
+		}
+		*/
+		dist = -50;
+		while(getTime() < 2.0 && !goodEnoughDrive(dist)) {
+			gyroDriveForward(DRIVE_SPEED, dist);
 		}
 		reset();
 		angle = -selectAngle() * 2.0;
