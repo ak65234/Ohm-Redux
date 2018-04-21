@@ -192,7 +192,7 @@ public class AutoTestClass {
 			hand.score();
 		}
 		reset();
-		while (getTime() < 1.5) { //Shoot
+		while (getTime() < 1.0) { //Shoot
 			drive.stop();
 			fingers.setSpeed(fingers.OUTTAKE);
 		}
@@ -242,7 +242,7 @@ public class AutoTestClass {
 			gyroTurn(TURN_SPEED, angle);
 		}
 		reset();
-		while (getTime() < 1.0) { //Drive into switch
+		while (getTime() < 2.0) { //Drive into switch
 			drive.arcade(0.5, 0);
 			hand.score();
 		}

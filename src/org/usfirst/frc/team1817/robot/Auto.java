@@ -67,9 +67,9 @@ public class Auto implements Runnable {
 
 		this.ds = DriverStation.getInstance();
 
-		AUTO.addDefault(TIMED_CROSS, TIMED_CROSS);
+		AUTO.addObject(TIMED_CROSS, TIMED_CROSS);
 		AUTO.addObject(SWITCH_AUTO, SWITCH_AUTO);
-		AUTO.addObject(TWO_CUBE, TWO_CUBE);
+		AUTO.addDefault(TWO_CUBE, TWO_CUBE);
 
 		SmartDashboard.putData("Auto", AUTO);
 
