@@ -127,12 +127,15 @@ public class AutoTestClass {
 					toSwitchMid();
 				} else if (switchLocation() == station.charAt(0)) {
 					sameSideSwitchAuto();
-					defendCloseCube();
+					if(DriverStation.getInstance().getGameSpecificMessage().charAt(1) != station.charAt(0)) {
+						defendCloseCube();
+					}
 				} else if (station == MIDDLE_STATION) {
 					middleSwitchAuto();
 					secondCubeMid();
 				} else {
-					oppositeSideSwitchAuto();
+					encoderCross();
+					//oppositeSideSwitchAuto();
 				}
 				break;
 			default:
@@ -203,7 +206,7 @@ public class AutoTestClass {
 	private void secondCubeMid() {
 		double angle;
 		double dist;
-		while (getTime() < 1.0) { // First backoff
+		while (getTime() < 2.0) { // First backoff
 			drive.arcade(-0.5, 0.0);
 		}
 		reset();
@@ -217,7 +220,7 @@ public class AutoTestClass {
 		if (switchLocation() == 'R') {
 			dist += 6;
 		}
-		while (getTime() < 2.0 && !goodEnoughDrive(dist)) { //Enter the cubes
+		while (getTime() < 4.0 && !goodEnoughDrive(dist)) { //Enter the cubes
 			gyroDriveForward(0.6, dist);
 			fingers.setSpeed(fingers.INTAKE);
 		}
@@ -382,7 +385,8 @@ public class AutoTestClass {
 	private boolean goodEnoughDrive(double target) {
 		if (!isAuto()) // Effectively skips all steps if auto has ended
 			return true;
-		return Math.abs(hw.getDistance() - target) <= 4;// && hw.driveAtRest();
+		//return Math.abs(hw.getDistance() - target) <= 4;// && hw.driveAtRest();
+		return Math.abs(hw.getDistance() - target) <= 7;// && hw.driveAtRest();
 	}
 
 	private boolean goodEnoughTurn(double angle) {

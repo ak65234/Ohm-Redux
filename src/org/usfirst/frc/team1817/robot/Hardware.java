@@ -99,7 +99,7 @@ public class Hardware {
 	 * Returns if the encoders and gyro are at a rest
 	 */
 	public boolean driveAtRest() {
-		return leftEncoder.getRate() == 0 && rightEncoder.getRate() == 0 && Math.abs(gyro.getRate()) < 0.05;
+		return leftEncoder.getRate() == 0 && rightEncoder.getRate() == 0 && Math.abs(gyro.getRate()) < 0.1;
 	}
 
 	public double getDistance() {
