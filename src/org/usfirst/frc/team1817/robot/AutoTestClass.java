@@ -165,7 +165,6 @@ public class AutoTestClass {
 		gyroDriveForward(DRIVE_SPEED, DISTANCE_TO_SWITCH_MID);
 	}
 
-	//TODO Tune
 	private void middleSwitchAuto() {
 		double angle;
 		double dist;
@@ -283,7 +282,6 @@ public class AutoTestClass {
 		hand.stow();
 	}
 
-	//TODO Test and tune
 	private void oppositeSideSwitchAuto() {
 		double angle;
 		double dist;

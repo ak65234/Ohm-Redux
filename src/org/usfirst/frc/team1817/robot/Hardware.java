@@ -98,7 +98,7 @@ public class Hardware {
 	/**
 	 * Returns if the encoders and gyro are at a rest
 	 */
-	public boolean driveAtRest() {
+	public boolean driveAtRest() { //TODO Tune this to do better with deadzones
 		return Math.abs(leftEncoder.getRate()) < 0.5 && 
 				Math.abs(rightEncoder.getRate()) < 0.5 && 
 				Math.abs(gyro.getRate()) < 0.1;
