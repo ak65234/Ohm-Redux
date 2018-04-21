@@ -226,7 +226,7 @@ public class AutoTestClass {
 			dist += 6;
 		}
 		while (getTime() < 4.0 && !goodEnoughDrive(dist)) { //Enter the cubes
-			gyroDriveForward(0.6, dist);
+			gyroDriveForward(0.75, dist);
 			fingers.setSpeed(fingers.INTAKE);
 		}
 		reset();
