@@ -205,15 +205,15 @@ public class AutoTestClass {
 	private void secondCubeMid() {
 		double angle;
 		double dist;
-		/*
 		while (getTime() < 2.0) { // First backoff
 			drive.arcade(-0.5, 0.0);
 		}
-		*/
+		/*
 		dist = -50;
 		while(getTime() < 2.0 && !goodEnoughDrive(dist)) {
 			gyroDriveForward(DRIVE_SPEED, dist);
 		}
+		 */
 		reset();
 		angle = -selectAngle() * 2.0;
 		while (getTime() < 1.5 && !goodEnoughTurn(angle)) { //Face stack
@@ -242,8 +242,8 @@ public class AutoTestClass {
 			gyroTurn(TURN_SPEED, angle);
 		}
 		reset();
-		while (getTime() < 2.0) { //Drive into switch
-			drive.arcade(0.5, 0);
+		while (getTime() < 3.0) { //Drive into switch
+			drive.arcade(0.6, 0);
 			hand.score();
 		}
 		drive.stop();

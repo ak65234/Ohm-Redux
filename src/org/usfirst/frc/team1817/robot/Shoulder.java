@@ -11,7 +11,7 @@ public class Shoulder implements Runnable{
 	Thread t;
 	
 	private final double DEADBAND = 0.07;
-	
+
 	public Shoulder(Hardware hw) {
 		this.shoulder = hw.shoulder;
 		this.shoulderEncoder = hw.shoulderEncoder;
