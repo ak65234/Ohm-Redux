@@ -7,14 +7,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 public class AutoTestClass {
 	//Autonomous selectors
 	private final SendableChooser<String> AUTO;
-	private final String TIMED_CROSS = "Timed Cross Line/Delayed Encoder cross";
-	private final String SWITCH_AUTO = "Switch";
-	private final String TWO_CUBE = "Two cube (only from center on tested)";
+	private final String TIMED_CROSS = "Delayed cross + possible cube";
+	private final String SWITCH_AUTO = "One cube";
+	private final String TWO_CUBE = "Two cube";
 
 	//Alliance station selectors
 	private final SendableChooser<String> STATION;
 	private final String LEFT_STATION = "Left station";
-	//private final String RIGHT_STATION = "Right station";
+	private final String RIGHT_STATION = "Right station";
 	private final String MIDDLE_STATION = "Middle station";
 
 	//Field specific constants
@@ -79,7 +79,20 @@ public class AutoTestClass {
 		new Thread(() -> {
 			switch (AUTO.getSelected()) {
 			case TIMED_CROSS:
-				encoderCross();
+				if (switchLocation() != station.charAt(0)) {
+					encoderCross();
+				} else {
+					sameSideSwitchAuto();
+					while (getTime() < 0.5) {
+						drive.arcade(-0.5, 0);
+					}
+					reset();
+					double turn = -selectAngle();
+					while (getTime() < 2.0 && !goodEnoughTurn(turn)) {
+						gyroTurn(TURN_SPEED, turn);
+					}
+					drive.stop();
+				}
 				break;
 			case SWITCH_AUTO:
 				while (switchLocation() == 'E' && getTime() < 5.0) {
@@ -90,6 +103,15 @@ public class AutoTestClass {
 					toSwitchMid();
 				} else if (switchLocation() == station.charAt(0)) {
 					sameSideSwitchAuto();
+					while (getTime() < 0.5) {
+						drive.arcade(-0.5, 0);
+					}
+					reset();
+					double turn = -selectAngle();
+					while (getTime() < 2.0 && !goodEnoughTurn(turn)) {
+						gyroTurn(TURN_SPEED, turn);
+					}
+					drive.stop();
 				} else if (station == MIDDLE_STATION) {
 					middleSwitchAuto();
 				} else {
@@ -105,23 +127,30 @@ public class AutoTestClass {
 					toSwitchMid();
 				} else if (switchLocation() == station.charAt(0)) {
 					sameSideSwitchAuto();
-					defendCloseCube();
+					if(DriverStation.getInstance().getGameSpecificMessage().charAt(1) != station.charAt(0)) {
+						defendCloseCube();
+					}
 				} else if (station == MIDDLE_STATION) {
 					middleSwitchAuto();
 					secondCubeMid();
 				} else {
-					oppositeSideSwitchAuto();
+					encoderCross();
+					//oppositeSideSwitchAuto();
 				}
+				break;
+			default:
+				System.out.println("Something went wrong!\nRunning default auto");
+				encoderCross();
 				break;
 			}
 		}).start();
 	}
 
 	private void encoderCross() {
-		while (getTime() < 7.5) {
+		while (getTime() < 10.5) {
 			drive.stop();
 		}
-		while (getTime() < 11) {
+		while (getTime() < 14) {
 			gyroDriveForward(DRIVE_SPEED, DISTANCE_TO_SWITCH_MID);
 		}
 		drive.stop();
@@ -136,7 +165,6 @@ public class AutoTestClass {
 		gyroDriveForward(DRIVE_SPEED, DISTANCE_TO_SWITCH_MID);
 	}
 
-	//TODO Tune
 	private void middleSwitchAuto() {
 		double angle;
 		double dist;
@@ -159,14 +187,14 @@ public class AutoTestClass {
 			gyroTurn(TURN_SPEED, angle);
 		}
 		reset();
-		while (getTime() < 0.5) { //Drive into switch
+		while (getTime() < 0.75) { //Drive into switch
 			drive.arcade(0.6, 0);
 			hand.score();
 		}
 		reset();
-		while (getTime() < 1.5) { //Shoot
+		while (getTime() < 1.0) { //Shoot
 			drive.stop();
-			fingers.setSpeed(1.0);
+			fingers.setSpeed(fingers.OUTTAKE);
 		}
 		fingers.setSpeed(0);
 		hand.stow();
@@ -177,26 +205,35 @@ public class AutoTestClass {
 	private void secondCubeMid() {
 		double angle;
 		double dist;
-		while (getTime() < 0.75) { // First backoff
+		while (getTime() < 2.0) { // First backoff
 			drive.arcade(-0.5, 0.0);
 		}
+		/*
+		dist = -50;
+		while(getTime() < 2.0 && !goodEnoughDrive(dist)) {
+			gyroDriveForward(DRIVE_SPEED, dist);
+		}
+		 */
 		reset();
-		angle = -selectAngle() * 2.35;
+		angle = -selectAngle() * 2.0;
 		while (getTime() < 1.5 && !goodEnoughTurn(angle)) { //Face stack
+			hand.extend();
 			gyroTurn(TURN_SPEED, angle);
 		}
 		reset();
 		dist = SWITCH_LENGTH / 2 - ROBOT_LENGTH;
-		while (getTime() < 2.0 && !goodEnoughDrive(dist)) { //Enter the cubes
-			gyroDriveForward(0.5, dist);
-			hand.extend();
-			fingers.setSpeed(1.0);
+		if (switchLocation() == 'R') {
+			dist += 6;
+		}
+		while (getTime() < 4.0 && !goodEnoughDrive(dist)) { //Enter the cubes
+			gyroDriveForward(0.75, dist);
+			fingers.setSpeed(fingers.INTAKE);
 		}
 		reset();
 		hand.stow();
 		fingers.setSpeed(0.0);
 		dist *= -0.9;
-		while (getTime() < 2.0 && !goodEnoughDrive(dist)) { //Back away
+		while (getTime() < 1.5 && !goodEnoughDrive(dist)) { //Back away
 			gyroDriveForward(0.5, dist);
 		}
 		reset();
@@ -205,11 +242,12 @@ public class AutoTestClass {
 			gyroTurn(TURN_SPEED, angle);
 		}
 		reset();
-		while (getTime() < 1.0) { //Drive into switch
-			drive.arcade(0.5, 0);
+		while (getTime() < 3.0) { //Drive into switch
+			drive.arcade(0.6, 0);
+			hand.score();
 		}
 		drive.stop();
-		fingers.setSpeed(1.0);
+		fingers.setSpeed(fingers.OUTTAKE);
 	}
 
 	private void sameSideSwitchAuto() {
@@ -238,11 +276,12 @@ public class AutoTestClass {
 		}
 		reset();
 		while (getTime() < 2) {
-			fingers.setSpeed(1);
+			fingers.setSpeed(fingers.OUTTAKE);
 		}
+		fingers.setSpeed(0);
+		hand.stow();
 	}
 
-	//TODO Test and tune
 	private void oppositeSideSwitchAuto() {
 		double angle;
 		double dist;
@@ -275,7 +314,7 @@ public class AutoTestClass {
 		reset();
 		while (getTime() < 2.0) {
 			drive.stop();
-			fingers.setSpeed(1);
+			fingers.setSpeed(fingers.OUTTAKE);
 		}
 	}
 
@@ -299,16 +338,16 @@ public class AutoTestClass {
 		reset();
 		angle *= -1;
 		if (angle < 0) {
-			angle -= 30;
+			angle -= 50;
 		} else {
-			angle += 30;
+			angle += 50;
 		}
 		while (getTime() < 2 && !goodEnoughTurn(angle)) {
 			gyroTurn(TURN_SPEED, angle);
 		}
 		reset();
 		hand.extend();
-		fingers.setSpeed(-2);
+		fingers.setSpeed(fingers.INTAKE);
 		while (getTime() < 1.25) {
 			drive.arcade(0.6, 0);
 		}
@@ -350,13 +389,14 @@ public class AutoTestClass {
 	private boolean goodEnoughDrive(double target) {
 		if (!isAuto()) // Effectively skips all steps if auto has ended
 			return true;
-		return Math.abs(hw.getDistance() - target) <= 4;// && hw.driveAtRest();
+		//return Math.abs(hw.getDistance() - target) <= 4;// && hw.driveAtRest();
+		return Math.abs(hw.getDistance() - target) <= 7;// && hw.driveAtRest();
 	}
 
 	private boolean goodEnoughTurn(double angle) {
 		if (!isAuto())
 			return true;
-		return Math.abs((hw.gyro.getAngle()) - angle) < 2.5 && hw.driveAtRest();
+		return Math.abs((hw.gyro.getAngle()) - angle) < 5 && hw.driveAtRest();
 	}
 
 	private boolean isAuto() {

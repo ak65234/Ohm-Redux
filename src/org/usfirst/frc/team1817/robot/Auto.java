@@ -9,13 +9,13 @@ public class Auto implements Runnable {
 
 	//Autonomous selectors
 	private final SendableChooser<String> AUTO = new SendableChooser<>();
-	private final String TIMED_CROSS = "Timed Cross Line/Delayed Encoder cross";
-	private final String SWITCH_AUTO = "Switch";
-	private final String TWO_CUBE = "Two cube (only from center on tested)";
+	private final String TIMED_CROSS = "Delayed cross + possible cube";
+	private final String SWITCH_AUTO = "One cube";
+	private final String TWO_CUBE = "Two cube";
 
 	private final SendableChooser<String> WHICH_AUTO = new SendableChooser<>();
-	private final String TESTED = "Tested (Worked at El Paso)";
-	private final String WIP = "Work in progress (Better timing and tuning)";
+	private final String TESTED = "DO NOT SELECT";
+	private final String WIP = "Working";
 
 	//Alliance station selectors
 	private final SendableChooser<String> STATION = new SendableChooser<>();
@@ -67,9 +67,9 @@ public class Auto implements Runnable {
 
 		this.ds = DriverStation.getInstance();
 
-		AUTO.addDefault(TIMED_CROSS, TIMED_CROSS);
+		AUTO.addObject(TIMED_CROSS, TIMED_CROSS);
 		AUTO.addObject(SWITCH_AUTO, SWITCH_AUTO);
-		AUTO.addObject(TWO_CUBE, TWO_CUBE);
+		AUTO.addDefault(TWO_CUBE, TWO_CUBE);
 
 		SmartDashboard.putData("Auto", AUTO);
 
@@ -79,8 +79,8 @@ public class Auto implements Runnable {
 
 		SmartDashboard.putData("Station", STATION);
 
-		WHICH_AUTO.addDefault(TESTED, TESTED);
-		WHICH_AUTO.addObject(WIP, WIP);
+		WHICH_AUTO.addDefault(WIP, WIP);
+		WHICH_AUTO.addObject(TESTED, TESTED);
 
 		SmartDashboard.putData("Which type?", WHICH_AUTO);
 
@@ -161,6 +161,10 @@ public class Auto implements Runnable {
 				break;
 			case TWO_CUBE:
 				middleSwitchAutoExp(time);
+				break;
+			default:
+				System.out.println("Something went wrong!\nRunning default auto");
+				timedCross(time);
 				break;
 			}
 		} else { //WORK IN PROGRESS AUTONS

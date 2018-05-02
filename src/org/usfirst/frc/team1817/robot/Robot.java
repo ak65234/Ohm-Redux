@@ -12,7 +12,7 @@ public class Robot extends TimedRobot {
 	private Shift shift;
 	private Hand hand;
 	private Fingers fingers;
-
+	private Shoulder shoulder;
 	private Toggle shiftToggle;
 	private Toggle throttleToggleUp;
 	private Toggle throttleToggleDown;
@@ -26,6 +26,7 @@ public class Robot extends TimedRobot {
 		shift = new Shift(hw);
 		hand = new Hand(hw);
 		fingers = new Fingers(hw);
+		shoulder = new Shoulder(hw);
 
 		shiftToggle = new Toggle();
 		throttleToggleUp = new Toggle();
@@ -73,13 +74,20 @@ public class Robot extends TimedRobot {
 		boolean dA = ctrls.driver.getAButton(); //A button
 		boolean dX = ctrls.driver.getXButton(); //X button
 		boolean dY = ctrls.driver.getYButton(); //Y button
+		boolean dB = ctrls.driver.getBButton(); //B button
 
 		double mLT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kLeft); //Left trigger
 		double mRT = ctrls.manipulator.getTriggerAxis(GenericHID.Hand.kRight); //Right trigger
-
+		double mRY = ctrls.manipulator.getY(GenericHID.Hand.kRight); //Left Y axis
+		boolean mUp = ctrls.manipulator.getPOV() == Controls.POV.UP;
+		boolean mDown = ctrls.manipulator.getPOV() == Controls.POV.DOWN;
+		boolean mRight = ctrls.manipulator.getPOV() == Controls.POV.RIGHT;
+		
 		drive.arcade(-dLY, dRX);
 
 		shift.setInHighGear(shiftToggle.update(dRB));
+		
+		//shoulder.manualMove(mRY);
 
 		if (throttleToggleUp.update(dUp)) {
 			drive.changeThrottleDown(0.01);
@@ -96,8 +104,18 @@ public class Robot extends TimedRobot {
 			hand.score();
 		} else if (dY) {
 			hand.stow();
+		} else if(dB) {
+			hand.topShelf();
 		} else {
 			hand.manualMove(mLT - mRT);
+		}
+		
+		if(mUp) {
+			//shoulder.up();
+		} else if(mDown) {
+			//shoulder.flat();
+		} else if(mRight){
+			//shoulder.score();
 		}
 
 		fingers.setSpeed(dRT - dLT);
