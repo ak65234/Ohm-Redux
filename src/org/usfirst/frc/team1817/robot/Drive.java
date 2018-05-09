@@ -67,7 +67,7 @@ public class Drive implements Runnable {
 			SmartDashboard.putNumber("Throttle down", throttleDown);
 			SmartDashboard.putNumber("Forward", leftOrPower);
 			SmartDashboard.putNumber("Turn", rightOrTurn);
-			if(!inAuto) {
+			if (!inAuto) {
 				chassis.arcadeDrive(deadband(leftOrPower), deadband(rightOrTurn));
 			} else {
 				chassis.arcadeDrive(leftOrPower, rightOrTurn);
@@ -81,24 +81,46 @@ public class Drive implements Runnable {
 		}
 	}
 
+	/**
+	 * Disables the drivetrain
+	 */
 	public void disable() {
 		state = DISABLED;
 	}
 
+	/**
+	 * Enables the drivetrain
+	 */
 	public void enable() {
 		state = ENABLED;
 	}
 
+	/**
+	 * Sets the drivetrain into autonomous mode. This allows for finer control and a
+	 * smaller ramp to avoid slipping of the wheels
+	 */
 	public void setAuto() {
 		inAuto = true;
 		ramp = 0.01; //Had strange acceleration at 0.025
 	}
 
+	/**
+	 * Sets the drivetrain into teleop mode This allows for faster acceleration and
+	 * has a deadband on input
+	 */
 	public void setTeleop() {
 		inAuto = false;
 		ramp = 0.1;
 	}
 
+	/**
+	 * Standard tank drive operation
+	 * 
+	 * @param left
+	 *            Left side speed
+	 * @param right
+	 *            Right side speed
+	 */
 	public void tank(double left, double right) {
 		mode = TANK;
 
@@ -109,6 +131,14 @@ public class Drive implements Runnable {
 		rightOrTurn += deltaR;
 	}
 
+	/**
+	 * An amperage limited arcade drive
+	 * 
+	 * @param power
+	 *            Forward/Backward speed
+	 * @param turn
+	 *            Speed at which to turn
+	 */
 	public void arcade(double power, double turn) {
 		mode = ARCADE;
 		if (getDriveCurrent() < 120 || throttleDown < 0.0009 && !DriverStation.getInstance().isAutonomous()) {
@@ -117,7 +147,7 @@ public class Drive implements Runnable {
 
 			leftOrPower += deltaP;
 			rightOrTurn += deltaT;
-		} else if(!DriverStation.getInstance().isAutonomous()){ //Throttle down the gearbox to conserve power
+		} else if (!DriverStation.getInstance().isAutonomous()) { //Throttle down the gearbox to conserve power
 			double deltaP, deltaT;
 			if (leftOrPower > 0) {
 				deltaP = -throttleDown;
@@ -140,6 +170,12 @@ public class Drive implements Runnable {
 		}
 	}
 
+	/**
+	 * Gets the total current of the drivetrain This is currently the total power
+	 * draw since there were no mechanisms drawing that much power
+	 * 
+	 * @return Total current being consumed by the drivetrain at the time
+	 */
 	private double getDriveCurrent() {
 		double current = pdp.getTotalCurrent();
 		//double current = 0;
@@ -162,10 +198,20 @@ public class Drive implements Runnable {
 		}
 	}
 
+	/**
+	 * Forces the drivetrain to stop all operations
+	 */
 	public void stop() {
 		mode = STOP;
 	}
 
+	/**
+	 * Implements a deadband
+	 * 
+	 * @param value
+	 *            The speed the user wishes to set
+	 * @return The speed as long as it is outside the deadband
+	 */
 	private double deadband(double value) {
 		return Math.abs(value) > DEADZONE ? value : 0.0;
 	}
